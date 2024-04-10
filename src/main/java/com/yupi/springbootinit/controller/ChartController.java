@@ -11,10 +11,7 @@ import com.yupi.springbootinit.constant.CommonConstant;
 import com.yupi.springbootinit.constant.UserConstant;
 import com.yupi.springbootinit.exception.BusinessException;
 import com.yupi.springbootinit.exception.ThrowUtils;
-import com.yupi.springbootinit.model.dto.chart.ChartAddRequest;
-import com.yupi.springbootinit.model.dto.chart.ChartEditRequest;
-import com.yupi.springbootinit.model.dto.chart.ChartQueryRequest;
-import com.yupi.springbootinit.model.dto.chart.ChartUpdateRequest;
+import com.yupi.springbootinit.model.dto.chart.*;
 import com.yupi.springbootinit.model.entity.Chart;
 import com.yupi.springbootinit.model.entity.User;
 import com.yupi.springbootinit.service.ChartService;
@@ -25,9 +22,13 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+
+import static com.yupi.springbootinit.utils.ChatAPI.Chat;
+import static com.yupi.springbootinit.utils.FlieUtils.ReadFiles;
 
 /**
  * 帖子接口
@@ -235,6 +236,7 @@ public class ChartController {
             return queryWrapper;
         }
         String goal = chartQueryRequest.getGoal();
+        String genName = chartQueryRequest.getGenName();
         String chatType = chartQueryRequest.getChatType();
         Long id = chartQueryRequest.getId();
         String sortOrder = chartQueryRequest.getSortOrder();
@@ -243,11 +245,49 @@ public class ChartController {
 
         queryWrapper.eq(id != null && id > 0,"id",id);
         queryWrapper.eq(StringUtils.isNotBlank(goal),"goal",goal);
+        queryWrapper.like(StringUtils.isNotBlank(genName),"genName",genName);
         queryWrapper.eq(StringUtils.isNotBlank(chatType),"chatType",chatType);
         queryWrapper.eq(ObjectUtils.isNotEmpty(userId), "userId", userId);
         queryWrapper.eq("isDelete",false);
         queryWrapper.orderBy(SqlUtils.validSortField(sortField), sortOrder.equals(CommonConstant.SORT_ORDER_ASC),
                 sortField);
         return queryWrapper;
+    }
+
+
+    /**
+     * 文件上传
+     *
+     * @param multipartFile 接受文件
+     * @param genChartByAiRequest 实际接受用户参数
+     * @param request
+     * @return
+     */
+    @PostMapping("/upload")
+    public BaseResponse<String> genChartByAi(@RequestPart("file") MultipartFile multipartFile,
+                                             GenChartByAiRequest genChartByAiRequest, HttpServletRequest request) {
+        String genName = genChartByAiRequest.getGenName();
+        String goal = genChartByAiRequest.getGoal();
+        String chatType = genChartByAiRequest.getChatType();
+        // 校验
+        // 如果分析目标为空，就抛出请求参数错误异常，并给出提示
+        ThrowUtils.throwIf(StringUtils.isBlank(goal), ErrorCode.PARAMS_ERROR, "目标为空");
+        // 如果名称不为空，并且名称长度大于100，就抛出异常，并给出提示
+        ThrowUtils.throwIf(StringUtils.isNotBlank(genName) && genName.length() > 100, ErrorCode.PARAMS_ERROR, "名称过长");
+        // 读取到用户上传的 excel 文件，进行一个处理
+        User loginUser = userService.getLoginUser(request);
+
+        // 构造提示词
+        StringBuilder userInput = new StringBuilder();
+        userInput.append("分析需求:").append("\n");
+        // 获取文件文本
+        String result = ReadFiles(multipartFile);
+        userInput.append(result).append("\n");
+        String s = "你是 Kimi，由 Moonshot AI 提供的人工智能助手，你更擅长中文和英文的对话。你会为用户提供安全，有帮助，准确的回答。同时，你会拒绝一切涉及恐怖主义，种族歧视，黄色暴力等问题的回答。Moonshot AI 为专有名词，不可翻译成其他语言";
+
+        String string = userInput.toString();
+        String chat = Chat(s, string);
+        return ResultUtils.success(chat);
+
     }
 }

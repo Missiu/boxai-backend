@@ -18,6 +18,11 @@ public class ChartAddRequest implements Serializable {
     private String goal;
 
     /**
+     * 图标名称
+     */
+    private String genName;
+
+    /**
      * 图标数据
      */
     private String chatData;

@@ -1,7 +1,5 @@
 package com.yupi.springbootinit.model.dto.chart;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import lombok.Data;
 
@@ -19,13 +17,18 @@ public class ChartUpdateRequest implements Serializable {
     /**
      * id
      */
-    @TableId(type = IdType.ASSIGN_ID)
     private Long id;
 
     /**
      * 分析目标
      */
     private String goal;
+
+
+    /**
+     * 图标名称
+     */
+    private String genName;
 
     /**
      * 图标数据

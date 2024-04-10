@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yupi.springbootinit.model.entity.Chart;
 import com.yupi.springbootinit.service.ChartService;
 import com.yupi.springbootinit.mapper.ChartMapper;
+import com.yupi.springbootinit.utils.ChatAPI;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -15,6 +17,13 @@ import org.springframework.stereotype.Service;
 public class ChartServiceImpl extends ServiceImpl<ChartMapper, Chart>
     implements ChartService{
 
+    @Autowired
+    private ChatAPI chatAPI;
+
+    public String genChat() {
+//        Chat()
+        return null;
+    }
 }
 
 

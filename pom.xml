@@ -17,6 +17,7 @@
     <name>boxai</name>
     <properties>
         <java.version>1.8</java.version>
+<!--        <openai.version>2024.01.1</openai.version>-->
     </properties>
     <dependencies>
         <dependency>
@@ -42,6 +43,11 @@
             <artifactId>mybatis-plus-boot-starter</artifactId>
             <version>3.5.2</version>
         </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.devlive.sdk</groupId>-->
+<!--            <artifactId>openai-java-sdk</artifactId>-->
+<!--            <version>${openai.version}</version>-->
+<!--        </dependency>-->
         <!-- redis -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -116,6 +122,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.30</version>
         </dependency>
     </dependencies>
 

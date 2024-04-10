@@ -6,6 +6,7 @@
 
     <resultMap id="BaseResultMap" type="com.yupi.springbootinit.model.entity.Chart">
             <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="genName" column="genName" jdbcType="VARCHAR"/>
             <result property="goal" column="goal" jdbcType="VARCHAR"/>
             <result property="chatData" column="chatData" jdbcType="VARCHAR"/>
             <result property="chatType" column="chatType" jdbcType="VARCHAR"/>
@@ -18,7 +19,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,goal,chatData,
+        id,goal,genName,chatData,
         chatType,genChart,genResult,userId,
         createTime,updateTime,isDelete
     </sql>
