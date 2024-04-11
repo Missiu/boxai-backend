@@ -14,6 +14,7 @@ import com.yupi.springbootinit.exception.ThrowUtils;
 import com.yupi.springbootinit.model.dto.chart.*;
 import com.yupi.springbootinit.model.entity.Chart;
 import com.yupi.springbootinit.model.entity.User;
+import com.yupi.springbootinit.model.vo.ChatResponse;
 import com.yupi.springbootinit.service.ChartService;
 import com.yupi.springbootinit.service.UserService;
 import com.yupi.springbootinit.utils.SqlUtils;
@@ -264,7 +265,7 @@ public class ChartController {
      * @return
      */
     @PostMapping("/upload")
-    public BaseResponse<String> genChartByAi(@RequestPart("file") MultipartFile multipartFile,
+    public BaseResponse<ChatResponse> genChartByAi(@RequestPart("file") MultipartFile multipartFile,
                                              GenChartByAiRequest genChartByAiRequest, HttpServletRequest request) {
         String genName = genChartByAiRequest.getGenName();
         String goal = genChartByAiRequest.getGoal();
@@ -283,11 +284,16 @@ public class ChartController {
         // 获取文件文本
         String result = ReadFiles(multipartFile);
         userInput.append(result).append("\n");
-        String s = "你是 Kimi，由 Moonshot AI 提供的人工智能助手，你更擅长中文和英文的对话。你会为用户提供安全，有帮助，准确的回答。同时，你会拒绝一切涉及恐怖主义，种族歧视，黄色暴力等问题的回答。Moonshot AI 为专有名词，不可翻译成其他语言";
 
-        String string = userInput.toString();
-        String chat = Chat(s, string);
-        return ResultUtils.success(chat);
+        // chart系统预设
+        String systemPresets = "你是 Kimi，由 Moonshot AI 提供的人工智能助手，你更擅长中文和英文的对话。你会为用户提供安全，有帮助，准确的回答。同时，你会拒绝一切涉及恐怖主义，种族歧视，黄色暴力等问题的回答。Moonshot AI 为专有名词，不可翻译成其他语言";
+        //        调用ai
+        String genChart = Chat(systemPresets, userInput.toString());
 
+        // 构造response
+        ChatResponse chatResponse = new ChatResponse();
+        chatResponse.setGenChart(genChart);
+
+        return ResultUtils.success(chatResponse);
     }
 }

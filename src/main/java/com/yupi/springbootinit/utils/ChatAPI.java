@@ -12,6 +12,7 @@ import java.util.Arrays;
 @Component
 public class ChatAPI {
     private static final String MOONSHOT_API_URL = "https://api.moonshot.cn/v1/chat/completions";
+
     private static final String MOONSHOT_API_KEY = ""; // 替换为您的实际API密钥
 
     public static String Chat( String systemTxt,String userTxt) {
@@ -37,15 +38,10 @@ public class ChatAPI {
                     .header("Authorization", "Bearer " + MOONSHOT_API_KEY)
                     .body(jsonBody)
                     .execute();
-//            System.out.println(response.body());
+            System.out.println(response.body());
             return response.body();
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
     }
-
-//    public static void main(String[] args) {
-//        String chat = chat("","你是谁?");
-//        System.out.println(chat);
-//    }
 }

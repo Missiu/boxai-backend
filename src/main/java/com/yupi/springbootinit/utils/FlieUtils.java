@@ -26,7 +26,7 @@ public class FlieUtils {
             while ((len = inputStream.read(buffer)) != -1){
                 // 将读取的字节转换为字符串，并输出到控制台
                 content = new String(buffer, 0, len, "UTF-8");
-                System.out.println(content);
+//                System.out.println(content);
 
             }
             inputStream.close();
