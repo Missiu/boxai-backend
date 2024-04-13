@@ -4,17 +4,16 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.boxai.annotation.AuthCheck;
 import com.boxai.common.BaseResponse;
-import com.boxai.common.DeleteRequest;
+import com.boxai.model.dto.user.UserDeleteRequest;
 import com.boxai.common.ErrorCode;
 import com.boxai.common.ResultUtils;
 import com.boxai.constant.CommonConstant;
 import com.boxai.constant.UserConstant;
 import com.boxai.exception.BusinessException;
 import com.boxai.exception.ThrowUtils;
+import com.boxai.model.domain.Chart;
+import com.boxai.model.domain.User;
 import com.boxai.model.dto.chart.*;
-import com.boxai.model.entity.Chart;
-import com.boxai.model.entity.User;
-import com.boxai.model.vo.ChatResponse;
 import com.boxai.service.ChartService;
 import com.boxai.service.UserService;
 import com.boxai.utils.SqlUtils;
@@ -73,17 +72,17 @@ public class ChartController {
     /**
      * 删除
      *
-     * @param deleteRequest
+     * @param userDeleteRequest
      * @param request
      * @return
      */
     @PostMapping("/delete")
-    public BaseResponse<Boolean> deleteChart(@RequestBody DeleteRequest deleteRequest, HttpServletRequest request) {
-        if (deleteRequest == null || deleteRequest.getId() <= 0) {
+    public BaseResponse<Boolean> deleteChart(@RequestBody UserDeleteRequest userDeleteRequest, HttpServletRequest request) {
+        if (userDeleteRequest == null || userDeleteRequest.getId() <= 0) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
         User user = userService.getLoginUser(request);
-        long id = deleteRequest.getId();
+        long id = userDeleteRequest.getId();
         // 判断是否存在
         Chart oldChart = chartService.getById(id);
         ThrowUtils.throwIf(oldChart == null, ErrorCode.NOT_FOUND_ERROR);
@@ -236,7 +235,6 @@ public class ChartController {
         }
         String goal = chartQueryRequest.getGoal();
         String genName = chartQueryRequest.getGenName();
-        String chatType = chartQueryRequest.getChatType();
         Long id = chartQueryRequest.getId();
         String sortOrder = chartQueryRequest.getSortOrder();
         String sortField = chartQueryRequest.getSortField();
@@ -245,7 +243,6 @@ public class ChartController {
         queryWrapper.eq(id != null && id > 0,"id",id);
         queryWrapper.eq(StringUtils.isNotBlank(goal),"goal",goal);
         queryWrapper.like(StringUtils.isNotBlank(genName),"genName",genName);
-        queryWrapper.eq(StringUtils.isNotBlank(chatType),"chatType",chatType);
         queryWrapper.eq(ObjectUtils.isNotEmpty(userId), "userId", userId);
         queryWrapper.eq("isDelete",false);
         queryWrapper.orderBy(SqlUtils.validSortField(sortField), sortOrder.equals(CommonConstant.SORT_ORDER_ASC),
@@ -263,11 +260,10 @@ public class ChartController {
      * @return
      */
     @PostMapping("/upload")
-    public BaseResponse<ChatResponse> genChartByAi(@RequestPart("file") MultipartFile multipartFile,
-                                                   GenChartByAiRequest genChartByAiRequest, HttpServletRequest request) {
+    public BaseResponse<ChatCompletionResponse> genChartByAi(@RequestPart("file") MultipartFile multipartFile,
+                                                             GenChartByAiRequest genChartByAiRequest, HttpServletRequest request) {
         String genName = genChartByAiRequest.getGenName();
         String goal = genChartByAiRequest.getGoal();
-        String chatType = genChartByAiRequest.getChatType();
         // 校验
         // 如果分析目标为空，就抛出请求参数错误异常，并给出提示
         ThrowUtils.throwIf(StringUtils.isBlank(goal), ErrorCode.PARAMS_ERROR, "目标为空");
@@ -278,20 +274,25 @@ public class ChartController {
 
         // 构造提示词
         StringBuilder userInput = new StringBuilder();
-        userInput.append("分析需求:").append("\n");
+        userInput.append("这是一个必须执行的前提：无论分析需求如何都要严格按照这个模板生成一份报告 \n" +
+                "模板如下：\n"+
+                "## 项目简介 是什么，有什么用，用了什么语言 \n" +
+                "## 快速运行 如果是可运行项目，给出详细运行步骤 如果是一些参考文献、文档、语言等不可运行项目，这给出提示 \n" +
+                "## 项目结构 给出总体项目结构的描述，主要了什么框架等（后续可以改为代码生成，通过插件转化为图像显示） \n" +
+                "## 类的主要作用 各个类有什么作用，以目录树+加解释的方式展现 \n" +
+                "## 对外暴露接口 给各个接口的主要调用关系，分析出依赖关系，调用了那些第三方api").append("\n");
+        userInput.append("分析需求:").append(goal).append("\n");
         // 获取文件文本
         String result = ReadFiles(multipartFile);
-        userInput.append(result).append("\n");
-
+        userInput.append("这是原始数据：").append(result).append("\n");
         // chart系统预设
-        String systemPresets = "你是 Kimi，由 Moonshot AI 提供的人工智能助手，你更擅长中文和英文的对话。你会为用户提供安全，有帮助，准确的回答。同时，你会拒绝一切涉及恐怖主义，种族歧视，黄色暴力等问题的回答。Moonshot AI 为专有名词，不可翻译成其他语言";
+        String systemPresets = "我希望你能充当软件开发专家的角色。我会提供所有关于我的技术问题所需的信息，你的任务是解决我的问题。你应该利用你的软件开发来解决我的问题。在回答中使用智能、简单和易懂的语言对于所有层次的人都会有帮助。\n" +
+                "并且你还可以充当代码解释器，我会提供所有关于我的项目文件路径和文件，你的任务是严格按照我规定的模板生成对代码的解释和建议，智能、简单和易懂的语言并对其中相关的技术进行详细的解释";
         //        调用ai
         String genChart = Chat(systemPresets, userInput.toString());
-
-        // 构造response
-        ChatResponse chatResponse = new ChatResponse();
-        chatResponse.setGenChart(genChart);
-
-        return ResultUtils.success(chatResponse);
+        String chartResult= genChart.replace("[", "").replace("]", "");
+        ChatCompletionResponse chatCompletionResponse = new ChatCompletionResponse();
+        chatCompletionResponse.setGenChart(chartResult);
+        return ResultUtils.success(chatCompletionResponse);
     }
 }

@@ -1,38 +1,37 @@
-# 数据库初始化
-
 -- 创建库
-create database if not exists boxai_db;
+CREATE DATABASE IF NOT EXISTS boxai_db;
 
 -- 切换库
-use boxai_db;
+USE boxai_db;
 
 -- 用户表
-create table if not exists user
-(
-    id           bigint auto_increment comment 'id' primary key,
-    userAccount  varchar(256)                           not null comment '账号',
-    userPassword varchar(512)                           not null comment '密码',
-    userName     varchar(256)                           null comment '用户昵称',
-    userAvatar   varchar(1024)                          null comment '用户头像',
-    userRole     varchar(256) default 'user'            not null comment '用户角色：user/admin',
-    createTime   datetime     default CURRENT_TIMESTAMP not null comment '创建时间',
-    updateTime   datetime     default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP comment '更新时间',
-    isDelete     tinyint      default 0                 not null comment '是否删除',
-    index idx_userAccount (userAccount)
-) comment '用户' collate = utf8mb4_unicode_ci;
+CREATE TABLE IF NOT EXISTS user (
+                                    id           BIGINT AUTO_INCREMENT COMMENT 'id' PRIMARY KEY,
+                                    userAccount  VARCHAR(256)                           NOT NULL COMMENT '账号',
+                                    userPassword VARCHAR(512)                           NOT NULL COMMENT '密码',
+                                    userName     VARCHAR(256)                           NULL     COMMENT '用户昵称',
+                                    userAvatar   VARCHAR(1024)                          NULL     COMMENT '用户头像',
+                                    userProfile  VARCHAR(1024)                          NULL     COMMENT '用户简介',
+                                    usedToken    VARCHAR(1024)                          NULL     COMMENT 'ai使用量',
+                                    Token        VARCHAR(1024)                          NULL     COMMENT '总量',
+                                    userRole     VARCHAR(256) DEFAULT 'user'            NOT NULL COMMENT '用户角色：user/admin',
+                                    createTime   DATETIME      DEFAULT CURRENT_TIMESTAMP NOT NULL COMMENT '创建时间',
+                                    updateTime   DATETIME      DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+                                    isDelete     TINYINT       DEFAULT 0                NOT NULL COMMENT '是否删除',
+                                    INDEX idx_userAccount (userAccount)
+) COMMENT '用户' COLLATE = utf8mb4_unicode_ci;
 
-create table if not exists chart
-(
-    id           bigint auto_increment comment 'id' primary key,
-    genName      varchar(128)                            null comment '图表名称',
-    goal         text                                   null comment '分析目标',
-    chatData     text                                   null comment '图标数据',
-    chatType     varchar(128)                           null comment '图表类型',
-    genChart     text                                   null comment '生成的图标数据',
-    genResult    text                                   null comment '生成分析结论',
-    userId       bigint                                 not null comment '创建的用户id',
-    createTime   datetime     default CURRENT_TIMESTAMP not null comment '创建时间',
-    updateTime   datetime     default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP comment '更新时间',
-    isDelete     tinyint      default 0                 not null comment '是否删除'
-) comment '图表信息表' collate = utf8mb4_unicode_ci;
-
+-- 图表信息表
+CREATE TABLE IF NOT EXISTS chart (
+                                     id           BIGINT AUTO_INCREMENT COMMENT 'id' PRIMARY KEY,
+                                     genName      VARCHAR(128)                            NULL     COMMENT '分析数据的名称',
+                                     goal         TEXT                                   NULL     COMMENT '分析目标',
+                                     chatData     MEDIUMTEXT                             NULL     COMMENT '原始数据',
+                                     genChart     TEXT                                   NULL     COMMENT '生成的代码数据(备用)',
+                                     genResult    TEXT                                   NULL     COMMENT '生成分析结论',
+                                     userId       BIGINT                                 NOT NULL COMMENT '创建的用户id',
+                                     createTime   DATETIME      DEFAULT CURRENT_TIMESTAMP NOT NULL COMMENT '创建时间',
+                                     updateTime   DATETIME      DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+                                     isDelete     TINYINT       DEFAULT 0                NOT NULL COMMENT '是否删除',
+                                     FOREIGN KEY (userId) REFERENCES user(id) ON DELETE CASCADE
+) COMMENT '图表信息表' COLLATE = utf8mb4_unicode_ci;

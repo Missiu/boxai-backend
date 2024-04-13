@@ -23,7 +23,7 @@ public class UserQueryRequest extends PageRequest implements Serializable {
     private String unionId;
 
     /**
-     * 公众号openId
+     * 注册时间
      */
     private String mpOpenId;
 

@@ -1,6 +1,9 @@
-package com.boxai.model.entity;
+package com.boxai.model.domain;
 
-import com.baomidou.mybatisplus.annotation.*;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -14,9 +17,9 @@ import java.util.Date;
 @Data
 public class User implements Serializable {
     /**
-     * id 使用雪花算法生成一个唯一的id，长整型
+     * id
      */
-    @TableId(type = IdType.ASSIGN_ID)
+    @TableId(type = IdType.AUTO)
     private Long id;
 
     /**
@@ -40,6 +43,21 @@ public class User implements Serializable {
     private String userAvatar;
 
     /**
+     * 用户简介
+     */
+    private String userProfile;
+
+    /**
+     * ai使用量
+     */
+    private String usedToken;
+
+    /**
+     * 总量
+     */
+    private String token;
+
+    /**
      * 用户角色：user/admin
      */
     private String userRole;
@@ -57,7 +75,6 @@ public class User implements Serializable {
     /**
      * 是否删除
      */
-    @TableLogic
     private Integer isDelete;
 
     @TableField(exist = false)

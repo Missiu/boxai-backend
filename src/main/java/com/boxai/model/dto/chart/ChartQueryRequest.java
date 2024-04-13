@@ -29,11 +29,6 @@ public class ChartQueryRequest extends PageRequest implements Serializable {
     private String goal;
 
     /**
-     * 图表类型
-     */
-    private String chatType;
-
-    /**
      * 创建的用户id
      */
     private Long userId;

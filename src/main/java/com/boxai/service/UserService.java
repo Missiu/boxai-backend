@@ -2,13 +2,11 @@ package com.boxai.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.boxai.model.vo.LoginUserVO;
+import com.boxai.model.domain.User;
+import com.boxai.model.dto.user.LoginUserResponse;
 import com.boxai.model.dto.user.UserQueryRequest;
-import com.boxai.model.entity.User;
-import com.boxai.model.vo.UserVO;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 /**
  * 用户服务
@@ -33,7 +31,7 @@ public interface UserService extends IService<User> {
      * @param request
      * @return 脱敏后的用户信息
      */
-    LoginUserVO userLogin(String userAccount, String userPassword, HttpServletRequest request);
+    LoginUserResponse userLogin(String userAccount, String userPassword, HttpServletRequest request);
 
 
     /**
@@ -81,23 +79,8 @@ public interface UserService extends IService<User> {
      *
      * @return
      */
-    LoginUserVO getLoginUserVO(User user);
+    LoginUserResponse getLoginUser(User user);
 
-    /**
-     * 获取脱敏的用户信息
-     *
-     * @param user
-     * @return
-     */
-    UserVO getUserVO(User user);
-
-    /**
-     * 获取脱敏的用户信息
-     *
-     * @param userList
-     * @return
-     */
-    List<UserVO> getUserVO(List<User> userList);
 
     /**
      * 获取查询条件

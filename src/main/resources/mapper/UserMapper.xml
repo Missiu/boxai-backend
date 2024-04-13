@@ -4,12 +4,15 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.boxai.mapper.UserMapper">
 
-    <resultMap id="BaseResultMap" type="com.boxai.model.entity.User">
+    <resultMap id="BaseResultMap" type="com.boxai.model.domain.User">
             <id property="id" column="id" jdbcType="BIGINT"/>
             <result property="userAccount" column="userAccount" jdbcType="VARCHAR"/>
             <result property="userPassword" column="userPassword" jdbcType="VARCHAR"/>
             <result property="userName" column="userName" jdbcType="VARCHAR"/>
             <result property="userAvatar" column="userAvatar" jdbcType="VARCHAR"/>
+            <result property="userProfile" column="userProfile" jdbcType="VARCHAR"/>
+            <result property="usedToken" column="usedToken" jdbcType="VARCHAR"/>
+            <result property="token" column="Token" jdbcType="VARCHAR"/>
             <result property="userRole" column="userRole" jdbcType="VARCHAR"/>
             <result property="createTime" column="createTime" jdbcType="TIMESTAMP"/>
             <result property="updateTime" column="updateTime" jdbcType="TIMESTAMP"/>
@@ -18,7 +21,8 @@
 
     <sql id="Base_Column_List">
         id,userAccount,userPassword,
-        userName,userAvatar,userRole,
+        userName,userAvatar,userProfile,
+        usedToken,Token,userRole,
         createTime,updateTime,isDelete
     </sql>
 </mapper>

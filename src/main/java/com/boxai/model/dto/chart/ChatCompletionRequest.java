@@ -1,4 +1,4 @@
-package com.boxai.common;
+package com.boxai.model.dto.chart;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;

@@ -1,6 +1,6 @@
 package com.boxai.service;
 
-import com.boxai.model.entity.Chart;
+import com.boxai.model.domain.Chart;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**

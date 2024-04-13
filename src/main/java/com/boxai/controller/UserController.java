@@ -3,16 +3,13 @@ package com.boxai.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.boxai.annotation.AuthCheck;
 import com.boxai.common.BaseResponse;
-import com.boxai.common.DeleteRequest;
 import com.boxai.common.ErrorCode;
 import com.boxai.common.ResultUtils;
 import com.boxai.constant.UserConstant;
 import com.boxai.exception.BusinessException;
 import com.boxai.exception.ThrowUtils;
+import com.boxai.model.domain.User;
 import com.boxai.model.dto.user.*;
-import com.boxai.model.entity.User;
-import com.boxai.model.vo.LoginUserVO;
-import com.boxai.model.vo.UserVO;
 import com.boxai.service.UserService;
 import com.boxai.service.impl.UserServiceImpl;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 /**
  * 用户接口
@@ -41,7 +37,6 @@ public class UserController {
 
     /**
      * 用户注册
-     *
      * @param userRegisterRequest
      * @return
      */
@@ -62,13 +57,12 @@ public class UserController {
 
     /**
      * 用户登录
-     *
      * @param userLoginRequest
      * @param request
      * @return
      */
     @PostMapping("/login")
-    public BaseResponse<LoginUserVO> userLogin(@RequestBody UserLoginRequest userLoginRequest, HttpServletRequest request) {
+    public BaseResponse<LoginUserResponse> userLogin(@RequestBody UserLoginRequest userLoginRequest, HttpServletRequest request) {
         if (userLoginRequest == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
@@ -77,8 +71,8 @@ public class UserController {
         if (StringUtils.isAnyBlank(userAccount, userPassword)) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
-        LoginUserVO loginUserVO = userService.userLogin(userAccount, userPassword, request);
-        return ResultUtils.success(loginUserVO);
+        LoginUserResponse loginUserResponse = userService.userLogin(userAccount, userPassword, request);
+        return ResultUtils.success(loginUserResponse);
     }
 
 
@@ -104,9 +98,9 @@ public class UserController {
      * @return
      */
     @GetMapping("/get/login")
-    public BaseResponse<LoginUserVO> getLoginUser(HttpServletRequest request) {
-        User user = userService.getLoginUser(request);
-        return ResultUtils.success(userService.getLoginUserVO(user));
+    public BaseResponse<LoginUserResponse> getLoginUser(HttpServletRequest request) {
+        User user = userService.getLoginUser(request); // 获取用户信息
+        return ResultUtils.success(userService.getLoginUser(user)); // 返回脱敏后的用户信息
     }
 
     // endregion
@@ -140,22 +134,22 @@ public class UserController {
     /**
      * 删除用户
      *
-     * @param deleteRequest
+     * @param userDeleteRequest
      * @param request
      * @return
      */
     @PostMapping("/delete")
     @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
-    public BaseResponse<Boolean> deleteUser(@RequestBody DeleteRequest deleteRequest, HttpServletRequest request) {
-        if (deleteRequest == null || deleteRequest.getId() <= 0) {
+    public BaseResponse<Boolean> deleteUser(@RequestBody UserDeleteRequest userDeleteRequest, HttpServletRequest request) {
+        if (userDeleteRequest == null || userDeleteRequest.getId() <= 0) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
-        boolean b = userService.removeById(deleteRequest.getId());
+        boolean b = userService.removeById(userDeleteRequest.getId());
         return ResultUtils.success(b);
     }
 
     /**
-     * 更新用户
+     * 更新用户 (仅管理员）
      *
      * @param userUpdateRequest
      * @param request
@@ -193,19 +187,6 @@ public class UserController {
         return ResultUtils.success(user);
     }
 
-    /**
-     * 根据 id 获取包装类
-     *
-     * @param id
-     * @param request
-     * @return
-     */
-    @GetMapping("/get/vo")
-    public BaseResponse<UserVO> getUserVOById(long id, HttpServletRequest request) {
-        BaseResponse<User> response = getUserById(id, request);
-        User user = response.getData();
-        return ResultUtils.success(userService.getUserVO(user));
-    }
 
     /**
      * 分页获取用户列表（仅管理员）
@@ -223,31 +204,6 @@ public class UserController {
         Page<User> userPage = userService.page(new Page<>(current, size),
                 userService.getQueryWrapper(userQueryRequest));
         return ResultUtils.success(userPage);
-    }
-
-    /**
-     * 分页获取用户封装列表
-     *
-     * @param userQueryRequest
-     * @param request
-     * @return
-     */
-    @PostMapping("/list/page/vo")
-    public BaseResponse<Page<UserVO>> listUserVOByPage(@RequestBody UserQueryRequest userQueryRequest,
-            HttpServletRequest request) {
-        if (userQueryRequest == null) {
-            throw new BusinessException(ErrorCode.PARAMS_ERROR);
-        }
-        long current = userQueryRequest.getCurrent();
-        long size = userQueryRequest.getPageSize();
-        // 限制爬虫
-        ThrowUtils.throwIf(size > 20, ErrorCode.PARAMS_ERROR);
-        Page<User> userPage = userService.page(new Page<>(current, size),
-                userService.getQueryWrapper(userQueryRequest));
-        Page<UserVO> userVOPage = new Page<>(current, size, userPage.getTotal());
-        List<UserVO> userVO = userService.getUserVO(userPage.getRecords());
-        userVOPage.setRecords(userVO);
-        return ResultUtils.success(userVOPage);
     }
 
     // endregion

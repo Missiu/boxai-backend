@@ -1,4 +1,4 @@
-package com.boxai.common;
+package com.boxai.model.dto.user;
 
 import lombok.Data;
 
@@ -9,7 +9,7 @@ import java.io.Serializable;
  *
  */
 @Data
-public class DeleteRequest implements Serializable {
+public class UserDeleteRequest implements Serializable {
 
     /**
      * id

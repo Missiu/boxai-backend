@@ -6,7 +6,7 @@ import lombok.Data;
 public class GenChartByAiRequest {
 
     /**
-     * 图标名称
+     *  分析数据的名称
      */
     private String genName;
 
@@ -14,11 +14,6 @@ public class GenChartByAiRequest {
      * 分析目标
      */
     private String goal;
-
-    /**
-     * 图表类型
-     */
-    private String chatType;
 
 
     private static final long serialVersionUID = 1L;

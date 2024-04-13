@@ -1,6 +1,5 @@
 package com.boxai.model.dto.chart;
 
-import com.baomidou.mybatisplus.annotation.TableLogic;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -11,34 +10,25 @@ import java.util.Date;
  */
 @Data
 public class ChartUpdateRequest implements Serializable {
-    /**
-     * id
-     */
     private Long id;
+
+    /**
+     * 分析数据的名称
+     */
+    private String genName;
 
     /**
      * 分析目标
      */
     private String goal;
 
-
     /**
-     * 图标名称
-     */
-    private String genName;
-
-    /**
-     * 图标数据
+     * 原始数据
      */
     private String chatData;
 
     /**
-     * 图表类型
-     */
-    private String chatType;
-
-    /**
-     * 生成的图标数据
+     * 生成的代码数据(备用)
      */
     private String genChart;
 
@@ -46,6 +36,11 @@ public class ChartUpdateRequest implements Serializable {
      * 生成分析结论
      */
     private String genResult;
+
+    /**
+     * 创建的用户id
+     */
+    private Long userId;
 
     /**
      * 创建时间
@@ -60,8 +55,8 @@ public class ChartUpdateRequest implements Serializable {
     /**
      * 是否删除
      */
-    @TableLogic
     private Integer isDelete;
+
 
     private static final long serialVersionUID = 1L;
 }

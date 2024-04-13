@@ -1,4 +1,4 @@
-package com.boxai.model.vo;
+package com.boxai.model.dto.user;
 
 import lombok.Data;
 
@@ -9,12 +9,16 @@ import java.util.Date;
  * 已登录用户视图（脱敏）
  **/
 @Data
-public class LoginUserVO implements Serializable {
+public class LoginUserResponse implements Serializable {
+    /**
+     * 账号
+     */
+    private String userAccount;
 
     /**
-     * 用户 id
+     * 密码
      */
-    private Long id;
+    private String userPassword;
 
     /**
      * 用户昵称
@@ -32,7 +36,17 @@ public class LoginUserVO implements Serializable {
     private String userProfile;
 
     /**
-     * 用户角色：user/admin/ban
+     * ai使用量
+     */
+    private String usedToken;
+
+    /**
+     * 总量
+     */
+    private String token;
+
+    /**
+     * 用户角色：user/admin
      */
     private String userRole;
 

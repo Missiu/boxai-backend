@@ -1,7 +1,7 @@
 package com.boxai.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.boxai.model.entity.Chart;
+import com.boxai.model.domain.Chart;
 import com.boxai.service.ChartService;
 import com.boxai.mapper.ChartMapper;
 import com.boxai.utils.ChatAPI;

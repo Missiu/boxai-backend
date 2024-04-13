@@ -1,17 +1,15 @@
 package com.boxai.service.impl;
 
-import cn.hutool.core.collection.CollUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.boxai.model.vo.LoginUserVO;
 import com.boxai.common.ErrorCode;
 import com.boxai.constant.CommonConstant;
 import com.boxai.exception.BusinessException;
 import com.boxai.mapper.UserMapper;
+import com.boxai.model.domain.User;
+import com.boxai.model.dto.user.LoginUserResponse;
 import com.boxai.model.dto.user.UserQueryRequest;
-import com.boxai.model.entity.User;
 import com.boxai.model.enums.UserRoleEnum;
-import com.boxai.model.vo.UserVO;
 import com.boxai.service.UserService;
 import com.boxai.utils.SqlUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -21,9 +19,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.boxai.constant.UserConstant.USER_LOGIN_STATE;
 
@@ -37,7 +32,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     /**
      * 盐值，混淆密码
      */
-    public static final String SALT = "yupi";
+    public static final String SALT = "xxm";
 
     @Override
     public long userRegister(String userAccount, String userPassword, String checkPassword) {
@@ -78,7 +73,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
-    public LoginUserVO userLogin(String userAccount, String userPassword, HttpServletRequest request) {
+    public LoginUserResponse userLogin(String userAccount, String userPassword, HttpServletRequest request) {
         // 1. 校验
         if (StringUtils.isAnyBlank(userAccount, userPassword)) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "参数为空");
@@ -103,13 +98,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
         // 3. 记录用户的登录态
         request.getSession().setAttribute(USER_LOGIN_STATE, user);
-        return this.getLoginUserVO(user);
+        return this.getLoginUser(user);
     }
 
 
     /**
      * 获取当前登录用户
-     *
      * @param request
      * @return
      */
@@ -170,7 +164,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     /**
      * 用户注销
-     *
      * @param request
      */
     @Override
@@ -184,31 +177,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
-    public LoginUserVO getLoginUserVO(User user) {
+    public LoginUserResponse getLoginUser(User user) {
         if (user == null) {
             return null;
         }
-        LoginUserVO loginUserVO = new LoginUserVO();
-        BeanUtils.copyProperties(user, loginUserVO);
-        return loginUserVO;
-    }
-
-    @Override
-    public UserVO getUserVO(User user) {
-        if (user == null) {
-            return null;
-        }
-        UserVO userVO = new UserVO();
-        BeanUtils.copyProperties(user, userVO);
-        return userVO;
-    }
-
-    @Override
-    public List<UserVO> getUserVO(List<User> userList) {
-        if (CollUtil.isEmpty(userList)) {
-            return new ArrayList<>();
-        }
-        return userList.stream().map(this::getUserVO).collect(Collectors.toList());
+        LoginUserResponse loginUserResponse = new LoginUserResponse();
+        BeanUtils.copyProperties(user, loginUserResponse);
+        return loginUserResponse;
     }
 
     @Override

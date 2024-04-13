@@ -1,6 +1,9 @@
-package com.boxai.model.entity;
+package com.boxai.model.domain;
 
-import com.baomidou.mybatisplus.annotation.*;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -20,7 +23,7 @@ public class Chart implements Serializable {
     private Long id;
 
     /**
-     * 图标名称
+     * 分析数据的名称
      */
     private String genName;
 
@@ -30,17 +33,12 @@ public class Chart implements Serializable {
     private String goal;
 
     /**
-     * 图标数据
+     * 原始数据
      */
     private String chatData;
 
     /**
-     * 图表类型
-     */
-    private String chatType;
-
-    /**
-     * 生成的图标数据
+     * 生成的代码数据(备用)
      */
     private String genChart;
 
@@ -67,7 +65,6 @@ public class Chart implements Serializable {
     /**
      * 是否删除
      */
-    @TableLogic
     private Integer isDelete;
 
     @TableField(exist = false)
