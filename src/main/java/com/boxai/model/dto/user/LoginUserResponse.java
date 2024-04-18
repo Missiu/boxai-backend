@@ -16,11 +16,6 @@ public class LoginUserResponse implements Serializable {
     private String userAccount;
 
     /**
-     * 密码
-     */
-    private String userPassword;
-
-    /**
      * 用户昵称
      */
     private String userName;

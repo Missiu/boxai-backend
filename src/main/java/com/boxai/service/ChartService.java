@@ -1,7 +1,7 @@
 package com.boxai.service;
 
-import com.boxai.model.domain.Chart;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.boxai.model.domain.Chart;
 
 /**
 * @author Hzh
@@ -9,4 +9,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
 * @createDate 2024-03-25 16:22:40
 */
 public interface ChartService extends IService<Chart> {
+    String GenChart(String goal, String result);
 }

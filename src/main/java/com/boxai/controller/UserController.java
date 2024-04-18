@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.boxai.annotation.AuthCheck;
 import com.boxai.common.BaseResponse;
 import com.boxai.common.ErrorCode;
-import com.boxai.common.ResultUtils;
+import com.boxai.common.ResultResponse;
 import com.boxai.constant.UserConstant;
 import com.boxai.exception.BusinessException;
 import com.boxai.exception.ThrowUtils;
@@ -52,7 +52,7 @@ public class UserController {
             return null;
         }
         long result = userService.userRegister(userAccount, userPassword, checkPassword);
-        return ResultUtils.success(result);
+        return ResultResponse.success(result);
     }
 
     /**
@@ -72,7 +72,7 @@ public class UserController {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
         LoginUserResponse loginUserResponse = userService.userLogin(userAccount, userPassword, request);
-        return ResultUtils.success(loginUserResponse);
+        return ResultResponse.success(loginUserResponse);
     }
 
 
@@ -88,7 +88,7 @@ public class UserController {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
         boolean result = userService.userLogout(request);
-        return ResultUtils.success(result);
+        return ResultResponse.success(result);
     }
 
     /**
@@ -100,7 +100,7 @@ public class UserController {
     @GetMapping("/get/login")
     public BaseResponse<LoginUserResponse> getLoginUser(HttpServletRequest request) {
         User user = userService.getLoginUser(request); // 获取用户信息
-        return ResultUtils.success(userService.getLoginUser(user)); // 返回脱敏后的用户信息
+        return ResultResponse.success(userService.getLoginUser(user)); // 返回脱敏后的用户信息
     }
 
     // endregion
@@ -128,7 +128,7 @@ public class UserController {
         user.setUserPassword(encryptPassword);
         boolean result = userService.save(user);
         ThrowUtils.throwIf(!result, ErrorCode.OPERATION_ERROR);
-        return ResultUtils.success(user.getId());
+        return ResultResponse.success(user.getId());
     }
 
     /**
@@ -145,7 +145,7 @@ public class UserController {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
         boolean b = userService.removeById(userDeleteRequest.getId());
-        return ResultUtils.success(b);
+        return ResultResponse.success(b);
     }
 
     /**
@@ -166,7 +166,7 @@ public class UserController {
         BeanUtils.copyProperties(userUpdateRequest, user);
         boolean result = userService.updateById(user);
         ThrowUtils.throwIf(!result, ErrorCode.OPERATION_ERROR);
-        return ResultUtils.success(true);
+        return ResultResponse.success(true);
     }
 
     /**
@@ -184,7 +184,7 @@ public class UserController {
         }
         User user = userService.getById(id);
         ThrowUtils.throwIf(user == null, ErrorCode.NOT_FOUND_ERROR);
-        return ResultUtils.success(user);
+        return ResultResponse.success(user);
     }
 
 
@@ -203,7 +203,7 @@ public class UserController {
         long size = userQueryRequest.getPageSize();
         Page<User> userPage = userService.page(new Page<>(current, size),
                 userService.getQueryWrapper(userQueryRequest));
-        return ResultUtils.success(userPage);
+        return ResultResponse.success(userPage);
     }
 
     // endregion
@@ -225,8 +225,10 @@ public class UserController {
         User user = new User();
         BeanUtils.copyProperties(userUpdateMyRequest, user);
         user.setId(loginUser.getId());
+        String encryptPassword = DigestUtils.md5DigestAsHex((UserServiceImpl.SALT + loginUser.getUserPassword()).getBytes());
+        user.setUserPassword(encryptPassword);
         boolean result = userService.updateById(user);
         ThrowUtils.throwIf(!result, ErrorCode.OPERATION_ERROR);
-        return ResultUtils.success(true);
+        return ResultResponse.success(true);
     }
 }

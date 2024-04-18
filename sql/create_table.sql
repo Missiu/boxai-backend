@@ -34,4 +34,4 @@ CREATE TABLE IF NOT EXISTS chart (
                                      updateTime   DATETIME      DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
                                      isDelete     TINYINT       DEFAULT 0                NOT NULL COMMENT '是否删除',
                                      FOREIGN KEY (userId) REFERENCES user(id) ON DELETE CASCADE
-) COMMENT '图表信息表' COLLATE = utf8mb4_unicode_ci;
+) COMMENT '数据信息表' COLLATE = utf8mb4_unicode_ci;

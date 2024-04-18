@@ -7,7 +7,7 @@ import java.io.InputStream;
 
 //文件读取
 public class FlieUtils {
-    public static String ReadFiles(MultipartFile multipartFile) {
+    public static String readFile(MultipartFile multipartFile) {
         String content = null;
         if (multipartFile.isEmpty()) return null;
         InputStream inputStream = null;
@@ -25,7 +25,20 @@ public class FlieUtils {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        System.out.println(content);
+//        System.out.println(content);
         return content;
+    }
+
+    public static String readFiles(MultipartFile[] files) {
+        StringBuffer sb = new StringBuffer();
+//        String content = null;
+        for(MultipartFile file : files){
+            String fileName = file.getOriginalFilename(); // 获取文件名
+            String content = readFile(file); // 读取文件内容
+            sb.append("\n").append("文件名称为： ").append(fileName).append("\n"); // 文件路径或文件名
+            sb.append("文件内容为：").append(content).append("\n"); // 文件内容
+        }
+//        System.out.println(content);
+        return sb.toString();
     }
 }
