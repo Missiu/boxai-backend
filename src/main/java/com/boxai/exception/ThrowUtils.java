@@ -1,6 +1,6 @@
 package com.boxai.exception;
 
-import com.boxai.common.ErrorCode;
+import com.boxai.common.enums.ErrorCode;
 
 /**
  * 抛异常工具类

@@ -1,5 +1,6 @@
-package com.boxai.common;
+package com.boxai.model.dto.common;
 
+import com.boxai.common.enums.ErrorCode;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -13,10 +14,9 @@ import java.io.Serializable;
 public class BaseResponse<T> implements Serializable {
 
     private int code;
-
     private T data;
-
     private String message;
+
 
     public BaseResponse(int code, T data, String message) {
         this.code = code;

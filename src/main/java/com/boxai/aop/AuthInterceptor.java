@@ -1,11 +1,11 @@
 package com.boxai.aop;
 
 import com.boxai.annotation.AuthCheck;
-import com.boxai.common.ErrorCode;
+import com.boxai.common.enums.ErrorCode;
 import com.boxai.exception.BusinessException;
 import com.boxai.model.domain.User;
 import com.boxai.service.UserService;
-import com.boxai.model.enums.UserRoleEnum;
+import com.boxai.common.enums.UserRoleEnum;
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;

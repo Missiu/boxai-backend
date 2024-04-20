@@ -1,6 +1,6 @@
 package com.boxai.exception;
 
-import com.boxai.common.ErrorCode;
+import com.boxai.common.enums.ErrorCode;
 
 /**
  * 自定义异常类
@@ -13,10 +13,7 @@ public class BusinessException extends RuntimeException {
      */
     private final int code;
 
-    public BusinessException(int code, String message) {
-        super(message);
-        this.code = code;
-    }
+
 
     public BusinessException(ErrorCode errorCode) {
         super(errorCode.getMessage());

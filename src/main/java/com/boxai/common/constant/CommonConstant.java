@@ -1,4 +1,4 @@
-package com.boxai.constant;
+package com.boxai.common.constant;
 
 /**
  * 通用常量

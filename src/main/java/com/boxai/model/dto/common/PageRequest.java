@@ -1,11 +1,12 @@
-package com.boxai.common;
+package com.boxai.model.dto.common;
 
-import com.boxai.constant.CommonConstant;
+import com.boxai.common.constant.CommonConstant;
 import lombok.Data;
 
 /**
  * 分页请求
  *
+ * @author Hzh
  */
 @Data
 public class PageRequest {

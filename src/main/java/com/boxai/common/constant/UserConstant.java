@@ -1,4 +1,4 @@
-package com.boxai.constant;
+package com.boxai.common.constant;
 
 /**
  * 用户常量
@@ -8,7 +8,7 @@ public interface UserConstant {
     /**
      * 用户登录态键
      */
-    String USER_LOGIN_STATE = "user_login";
+    String  USER_LOGIN_STATE = "user_login";
 
     //  region 权限
 

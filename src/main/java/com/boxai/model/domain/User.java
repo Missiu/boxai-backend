@@ -58,7 +58,7 @@ public class User implements Serializable {
     private String token;
 
     /**
-     * 用户角色：user/admin
+     * 用户角色：user/admin/ban
      */
     private String userRole;
 

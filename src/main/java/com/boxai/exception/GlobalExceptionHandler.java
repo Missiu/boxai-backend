@@ -1,8 +1,8 @@
 package com.boxai.exception;
 
-import com.boxai.common.BaseResponse;
-import com.boxai.common.ErrorCode;
-import com.boxai.common.ResultResponse;
+import com.boxai.model.dto.common.BaseResponse;
+import com.boxai.common.enums.ErrorCode;
+import com.boxai.model.dto.common.ResultResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;

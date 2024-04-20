@@ -43,7 +43,14 @@
             <artifactId>mybatis-plus-boot-starter</artifactId>
             <version>3.5.2</version>
         </dependency>
-<!--        <dependency>-->
+        <!-- https://mvnrepository.com/artifact/commons-codec/commons-codec -->
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.15</version>
+        </dependency>
+
+        <!--        <dependency>-->
 <!--            <groupId>org.devlive.sdk</groupId>-->
 <!--            <artifactId>openai-java-sdk</artifactId>-->
 <!--            <version>${openai.version}</version>-->
@@ -142,6 +149,14 @@
                             <artifactId>lombok</artifactId>
                         </exclude>
                     </excludes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>14</source>
+                    <target>14</target>
                 </configuration>
             </plugin>
         </plugins>

@@ -1,6 +1,6 @@
 package com.boxai.model.dto.chart;
 
-import com.boxai.common.PageRequest;
+import com.boxai.model.dto.common.PageRequest;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

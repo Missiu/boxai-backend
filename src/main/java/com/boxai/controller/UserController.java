@@ -1,28 +1,22 @@
 package com.boxai.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.boxai.annotation.AuthCheck;
-import com.boxai.common.BaseResponse;
-import com.boxai.common.ErrorCode;
-import com.boxai.common.ResultResponse;
-import com.boxai.constant.UserConstant;
+import com.boxai.common.enums.ErrorCode;
 import com.boxai.exception.BusinessException;
-import com.boxai.exception.ThrowUtils;
 import com.boxai.model.domain.User;
+import com.boxai.model.dto.common.BaseResponse;
+import com.boxai.model.dto.common.ResultResponse;
 import com.boxai.model.dto.user.*;
 import com.boxai.service.UserService;
-import com.boxai.service.impl.UserServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.BeanUtils;
-import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * 用户接口
+ * @author Hzh
  */
 @RestController
 @RequestMapping("/user")
@@ -32,203 +26,139 @@ public class UserController {
     @Resource
     private UserService userService;
 
-
-    // region 登录相关
-
     /**
      * 用户注册
-     * @param userRegisterRequest
-     * @return
+     * @param userRegisterRequest 注册请求参数
+     * @return 注册结果
      */
     @PostMapping("/register")
     public BaseResponse<Long> userRegister(@RequestBody UserRegisterRequest userRegisterRequest) {
+        // 校验请求体是否为空
         if (userRegisterRequest == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
+        // 提取用户账号、密码和确认密码
         String userAccount = userRegisterRequest.getUserAccount();
         String userPassword = userRegisterRequest.getUserPassword();
         String checkPassword = userRegisterRequest.getCheckPassword();
+        // 校验账号、密码和确认密码是否为空
         if (StringUtils.isAnyBlank(userAccount, userPassword, checkPassword)) {
             return null;
         }
+        // 调用服务层执行用户注册操作
         long result = userService.userRegister(userAccount, userPassword, checkPassword);
+        // 构造并返回注册成功的响应
         return ResultResponse.success(result);
     }
 
     /**
      * 用户登录
-     * @param userLoginRequest
-     * @param request
-     * @return
+     * @param userLoginRequest 登录请求参数
+     * @param request 用户的HTTP请求
+     * @return 登录结果
      */
     @PostMapping("/login")
-    public BaseResponse<LoginUserResponse> userLogin(@RequestBody UserLoginRequest userLoginRequest, HttpServletRequest request) {
+    public BaseResponse<UserLoginResponse> userLogin(@RequestBody UserLoginRequest userLoginRequest, HttpServletRequest request) {
+        // 校验登录请求参数是否为空
         if (userLoginRequest == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
+        // 提取用户名和密码
         String userAccount = userLoginRequest.getUserAccount();
         String userPassword = userLoginRequest.getUserPassword();
+        // 校验用户名和密码是否为空
         if (StringUtils.isAnyBlank(userAccount, userPassword)) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
-        LoginUserResponse loginUserResponse = userService.userLogin(userAccount, userPassword, request);
-        return ResultResponse.success(loginUserResponse);
+        // 调用服务层处理登录逻辑，并获取登录结果
+        UserLoginResponse userLoginResponse = userService.userLogin(userAccount, userPassword, request);
+        // 构造并返回登录成功的响应
+        return ResultResponse.success(userLoginResponse);
     }
 
-
     /**
-     * 用户注销
-     *
-     * @param request
-     * @return
+     * 用户登出
+     * @param request 用户的HTTP请求
+     * @return 登出结果
      */
     @PostMapping("/logout")
     public BaseResponse<Boolean> userLogout(HttpServletRequest request) {
+        // 检查请求对象是否为空，若为空则抛出业务异常
         if (request == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
+        // 执行用户登出操作，并获取操作结果
         boolean result = userService.userLogout(request);
         return ResultResponse.success(result);
     }
 
     /**
-     * 获取当前登录用户
-     *
-     * @param request
-     * @return
+     * 获取登录用户信息
+     * @param request 用户的HTTP请求
+     * @return 登录用户信息
      */
     @GetMapping("/get/login")
-    public BaseResponse<LoginUserResponse> getLoginUser(HttpServletRequest request) {
+    public BaseResponse<UserLoginResponse> getLoginUser(HttpServletRequest request) {
         User user = userService.getLoginUser(request); // 获取用户信息
         return ResultResponse.success(userService.getLoginUser(user)); // 返回脱敏后的用户信息
-    }
-
-    // endregion
-
-    // region 增删改查
-
-    /**
-     * 创建用户
-     *
-     * @param userAddRequest
-     * @param request
-     * @return
-     */
-    @PostMapping("/add")
-    @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
-    public BaseResponse<Long> addUser(@RequestBody UserAddRequest userAddRequest, HttpServletRequest request) {
-        if (userAddRequest == null) {
-            throw new BusinessException(ErrorCode.PARAMS_ERROR);
-        }
-        User user = new User();
-        BeanUtils.copyProperties(userAddRequest, user);
-        // 默认密码 12345678
-        String defaultPassword = "12345678";
-        String encryptPassword = DigestUtils.md5DigestAsHex((UserServiceImpl.SALT + defaultPassword).getBytes());
-        user.setUserPassword(encryptPassword);
-        boolean result = userService.save(user);
-        ThrowUtils.throwIf(!result, ErrorCode.OPERATION_ERROR);
-        return ResultResponse.success(user.getId());
     }
 
     /**
      * 删除用户
      *
-     * @param userDeleteRequest
-     * @param request
-     * @return
+     * @param userDeleteRequest 包含要删除用户ID的请求体
+     * @return 返回一个布尔值的成功响应，表示删除操作是否成功
+     * @throws BusinessException 如果传入的用户ID不合法，则抛出业务异常
      */
     @PostMapping("/delete")
-    @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
-    public BaseResponse<Boolean> deleteUser(@RequestBody UserDeleteRequest userDeleteRequest, HttpServletRequest request) {
+//    @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
+    public BaseResponse<Boolean> deleteUser(@RequestBody UserDeleteRequest userDeleteRequest) {
+        // 校验传入的用户删除请求是否合法
         if (userDeleteRequest == null || userDeleteRequest.getId() <= 0) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
+        // 调用服务层方法，根据ID删除用户
         boolean b = userService.removeById(userDeleteRequest.getId());
+        // 构造并返回删除成功与否的响应
         return ResultResponse.success(b);
     }
 
     /**
-     * 更新用户 (仅管理员）
+     * 更新用户信息
      *
-     * @param userUpdateRequest
-     * @param request
-     * @return
+     * @param userUpdateRequest 包含更新用户信息的请求体，不能为空且必须包含用户ID
+     * @return 返回操作结果的响应体，操作成功则返回true
+     * @throws BusinessException 如果用户更新请求体为空或缺少用户ID，抛出业务异常
      */
     @PostMapping("/update")
-    @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
-    public BaseResponse<Boolean> updateUser(@RequestBody UserUpdateRequest userUpdateRequest,
-            HttpServletRequest request) {
-        if (userUpdateRequest == null || userUpdateRequest.getId() == null) {
+    public BaseResponse<Boolean> updateUser(@RequestBody UserUpdateRequest userUpdateRequest,HttpServletRequest request) {
+        // 校验用户更新请求是否为空或缺少ID
+        if (userUpdateRequest == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
-        User user = new User();
-        BeanUtils.copyProperties(userUpdateRequest, user);
-        boolean result = userService.updateById(user);
-        ThrowUtils.throwIf(!result, ErrorCode.OPERATION_ERROR);
-        return ResultResponse.success(true);
-    }
-
-    /**
-     * 根据 id 获取用户（仅管理员）
-     *
-     * @param id
-     * @param request
-     * @return
-     */
-    @GetMapping("/get")
-    @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
-    public BaseResponse<User> getUserById(long id, HttpServletRequest request) {
-        if (id <= 0) {
-            throw new BusinessException(ErrorCode.PARAMS_ERROR);
-        }
-        User user = userService.getById(id);
-        ThrowUtils.throwIf(user == null, ErrorCode.NOT_FOUND_ERROR);
-        return ResultResponse.success(user);
+        boolean result = userService.updateUser(userUpdateRequest,request);
+        // 返回更新成功的响应
+        return ResultResponse.success(result);
     }
 
 
     /**
-     * 分页获取用户列表（仅管理员）
+     * 分页查询用户列表信息
      *
-     * @param userQueryRequest
-     * @param request
-     * @return
+     * @param userQueryRequest 用户查询请求对象，包含当前页号和每页大小
+     * @param request HttpServletRequest对象，用于获取请求信息（本例中未使用，可根据实际需要添加）
+     * @return 返回用户列表的分页响应信息，包含查询到的用户页面对象
      */
     @PostMapping("/list/page")
-    @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
     public BaseResponse<Page<User>> listUserByPage(@RequestBody UserQueryRequest userQueryRequest,
             HttpServletRequest request) {
+        // 根据请求获取当前页号和每页大小
         long current = userQueryRequest.getCurrent();
         long size = userQueryRequest.getPageSize();
+        // 调用服务层方法，进行用户信息的分页查询
         Page<User> userPage = userService.page(new Page<>(current, size),
                 userService.getQueryWrapper(userQueryRequest));
+        // 将查询结果包装成成功响应并返回
         return ResultResponse.success(userPage);
-    }
-
-    // endregion
-
-    /**
-     * 更新个人信息
-     *
-     * @param userUpdateMyRequest
-     * @param request
-     * @return
-     */
-    @PostMapping("/update/my")
-    public BaseResponse<Boolean> updateMyUser(@RequestBody UserUpdateMyRequest userUpdateMyRequest,
-            HttpServletRequest request) {
-        if (userUpdateMyRequest == null) {
-            throw new BusinessException(ErrorCode.PARAMS_ERROR);
-        }
-        User loginUser = userService.getLoginUser(request);
-        User user = new User();
-        BeanUtils.copyProperties(userUpdateMyRequest, user);
-        user.setId(loginUser.getId());
-        String encryptPassword = DigestUtils.md5DigestAsHex((UserServiceImpl.SALT + loginUser.getUserPassword()).getBytes());
-        user.setUserPassword(encryptPassword);
-        boolean result = userService.updateById(user);
-        ThrowUtils.throwIf(!result, ErrorCode.OPERATION_ERROR);
-        return ResultResponse.success(true);
     }
 }

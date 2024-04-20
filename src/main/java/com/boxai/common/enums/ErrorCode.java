@@ -1,4 +1,4 @@
-package com.boxai.common;
+package com.boxai.common.enums;
 
 /**
  * 自定义错误码

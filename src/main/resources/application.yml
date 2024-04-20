@@ -1,13 +1,12 @@
+# Spring 应用配置
 spring:
   application:
-    name: boxai
-  # 默认 dev 环境
+    name: boxai  # 应用名称
   profiles:
-    active: dev
-  # 支持 swagger3
+    active: dev  # 默认激活的环境配置为 dev
   mvc:
     pathmatch:
-      matching-strategy: ant_path_matcher
+      matching-strategy: ant_path_matcher  # 支持 Swagger3
   # session 配置
   session:
     # todo 取消注释开启分布式 session（须先配置 Redis）

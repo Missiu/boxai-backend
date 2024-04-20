@@ -1,4 +1,4 @@
-package com.boxai.model.enums;
+package com.boxai.common.enums;
 
 import org.apache.commons.lang3.ObjectUtils;
 

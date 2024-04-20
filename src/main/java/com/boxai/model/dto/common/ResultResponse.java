@@ -1,4 +1,6 @@
-package com.boxai.common;
+package com.boxai.model.dto.common;
+
+import com.boxai.common.enums.ErrorCode;
 
 /**
  * 返回工具类
@@ -15,6 +17,7 @@ public class ResultResponse {
     public static <T> BaseResponse<T> success(T data) {
         return new BaseResponse<>(0, data, "ok");
     }
+
 
     /**
      * 失败
