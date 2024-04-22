@@ -1,4 +1,4 @@
-package com.boxai.utils;
+package com.boxai.config;
 
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.BeansException;

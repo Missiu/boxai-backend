@@ -98,3 +98,8 @@ knife4j:
         api-rule: package
         api-rule-resources:
           - com.boxai.controller
+
+moonlight:
+  api:
+    url: https://api.moonshot.cn/v1/chat/completions
+    key: sk-4lLjQlxipwp1G0CEZIZIrdfEZ39zQkQj25j8TdaZKIC3FinG

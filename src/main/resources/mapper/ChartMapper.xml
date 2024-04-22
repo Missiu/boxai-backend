@@ -8,7 +8,7 @@
             <id property="id" column="id" jdbcType="BIGINT"/>
             <result property="genName" column="genName" jdbcType="VARCHAR"/>
             <result property="goal" column="goal" jdbcType="VARCHAR"/>
-            <result property="chatData" column="chatData" jdbcType="VARCHAR"/>
+            <result property="rawData" column="chatData" jdbcType="VARCHAR"/>
             <result property="genChart" column="genChart" jdbcType="VARCHAR"/>
             <result property="genResult" column="genResult" jdbcType="VARCHAR"/>
             <result property="userId" column="userId" jdbcType="BIGINT"/>
@@ -19,7 +19,7 @@
 
     <sql id="Base_Column_List">
         id,genName,goal,
-        chatData,genChart,genResult,
+        rawData,genChart,genResult,
         userId,createTime,updateTime,
         isDelete
     </sql>

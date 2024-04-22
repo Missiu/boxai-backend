@@ -1,13 +1,29 @@
 package com.boxai.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.boxai.model.domain.Chart;
+import com.boxai.model.dto.aigc.ChartQueryRequest;
 
 /**
-* @author Hzh
-* @description 针对表【chart(图表信息表)】的数据库操作Service
-* @createDate 2024-03-25 16:22:40
-*/
+ * 图表服务接口，继承自IService<Chart>，提供图表生成和查询条件包装的功能。
+ */
 public interface ChartService extends IService<Chart> {
-    String GenChart(String goal, String result);
+
+    /**
+     * 根据目标和结果生成图表。
+     *
+     * @param goal 目标字符串，用于生成图表的目标指引。
+     * @param result 结果字符串，包含生成图表所需要的数据或信息。
+     * @return 返回图表的字符串表示，可能是URL、Base64编码的图片字符串等。
+     */
+    String genChart(String goal, String result);
+
+    /**
+     * 根据图表查询请求获取查询条件包装器。
+     *
+     * @param chartQueryRequest 包含图表查询条件的数据传输对象。
+     * @return 返回配置了查询条件的QueryWrapper<Chart>对象，用于图表数据的查询。
+     */
+    QueryWrapper<Chart> getQueryWrapper(ChartQueryRequest chartQueryRequest);
 }

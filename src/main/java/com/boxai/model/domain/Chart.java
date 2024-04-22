@@ -35,7 +35,7 @@ public class Chart implements Serializable {
     /**
      * 原始数据
      */
-    private String chatData;
+    private String rawData;
 
     /**
      * 生成的代码数据(备用)

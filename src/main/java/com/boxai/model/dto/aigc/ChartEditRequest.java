@@ -1,4 +1,4 @@
-package com.boxai.model.dto.chart;
+package com.boxai.model.dto.aigc;
 
 import lombok.Data;
 
@@ -6,10 +6,13 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 更新请求
+ * 编辑请求
+ *
+ * @author Hzh
  */
 @Data
-public class ChartUpdateRequest implements Serializable {
+public class ChartEditRequest implements Serializable {
+
     private Long id;
 
     /**
@@ -41,11 +44,6 @@ public class ChartUpdateRequest implements Serializable {
      * 创建的用户id
      */
     private Long userId;
-
-    /**
-     * 创建时间
-     */
-    private Date createTime;
 
     /**
      * 更新时间

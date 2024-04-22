@@ -21,12 +21,11 @@ CREATE TABLE IF NOT EXISTS user (
                                     INDEX idx_userAccount (userAccount)
 ) COMMENT '用户' COLLATE = utf8mb4_unicode_ci;
 
--- 图表信息表
 CREATE TABLE IF NOT EXISTS chart (
                                      id           BIGINT AUTO_INCREMENT COMMENT 'id' PRIMARY KEY,
                                      genName      VARCHAR(128)                            NULL     COMMENT '分析数据的名称',
                                      goal         TEXT                                   NULL     COMMENT '分析目标',
-                                     chatData     MEDIUMTEXT                             NULL     COMMENT '原始数据',
+                                     rawData     MEDIUMTEXT                             NULL     COMMENT '原始数据',
                                      genChart     TEXT                                   NULL     COMMENT '生成的代码数据(备用)',
                                      genResult    TEXT                                   NULL     COMMENT '生成分析结论',
                                      userId       BIGINT                                 NOT NULL COMMENT '创建的用户id',

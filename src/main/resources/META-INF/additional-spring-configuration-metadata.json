@@ -29,6 +29,11 @@
       "name": "wx.open.appSecret",
       "type": "java.lang.String",
       "description": "Description for wx.open.appSecret."
+    },
+    {
+      "name": "moonlight.api.key",
+      "type": "java.lang.String",
+      "description": "Description for moonlight.api.key."
     }
   ]
 }
