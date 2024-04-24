@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -19,7 +20,7 @@ public class User implements Serializable {
     /**
      * id
      */
-    @TableId(type = IdType.ASSIGN_ID)
+    @TableId(type = IdType.AUTO)
     private Long id;
 
     /**
@@ -48,17 +49,22 @@ public class User implements Serializable {
     private String userProfile;
 
     /**
-     * ai使用量
+     * 可用余额
      */
-    private String usedToken;
+    private BigDecimal availableBalance;
 
     /**
-     * 总量
+     * 代金券余额, 不会为负数
      */
-    private String token;
+    private BigDecimal voucherBalance;
 
     /**
-     * 用户角色：user/admin/ban
+     * 现金余额, 可能为负数, 代表用户欠费
+     */
+    private BigDecimal cashBalance;
+
+    /**
+     * 用户角色：user/vip
      */
     private String userRole;
 

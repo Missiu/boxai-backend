@@ -58,7 +58,7 @@ public class UserController {
      * @return 登录结果
      */
     @PostMapping("/login")
-    public BaseResponse<UserLoginResponse> userLogin(@RequestBody UserLoginRequest userLoginRequest, HttpServletRequest request) {
+    public BaseResponse<UserInfoResponse> userLogin(@RequestBody UserLoginRequest userLoginRequest, HttpServletRequest request) {
         // 校验登录请求参数是否为空
         if (userLoginRequest == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
@@ -71,9 +71,9 @@ public class UserController {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
         // 调用服务层处理登录逻辑，并获取登录结果
-        UserLoginResponse userLoginResponse = userService.userLogin(userAccount, userPassword, request);
+        UserInfoResponse userInfoResponse = userService.userLogin(userAccount, userPassword, request);
         // 构造并返回登录成功的响应
-        return ResultResponse.success(userLoginResponse);
+        return ResultResponse.success(userInfoResponse);
     }
 
     /**
@@ -98,7 +98,7 @@ public class UserController {
      * @return 登录用户信息
      */
     @GetMapping("/get/login")
-    public BaseResponse<UserLoginResponse> getLoginUser(HttpServletRequest request) {
+    public BaseResponse<UserInfoResponse> getLoginUser(HttpServletRequest request) {
         User user = userService.getLoginUser(request); // 获取用户信息
         return ResultResponse.success(userService.getLoginUser(user)); // 返回脱敏后的用户信息
     }

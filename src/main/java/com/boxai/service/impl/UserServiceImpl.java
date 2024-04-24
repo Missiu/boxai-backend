@@ -8,7 +8,7 @@ import com.boxai.common.enums.UserRoleEnum;
 import com.boxai.exception.BusinessException;
 import com.boxai.mapper.UserMapper;
 import com.boxai.model.domain.User;
-import com.boxai.model.dto.user.UserLoginResponse;
+import com.boxai.model.dto.user.UserInfoResponse;
 import com.boxai.model.dto.user.UserQueryRequest;
 import com.boxai.model.dto.user.UserUpdateRequest;
 import com.boxai.service.UserService;
@@ -94,7 +94,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      * @return 登录用户响应信息
      */
     @Override
-    public UserLoginResponse userLogin(String userAccount, String userPassword, HttpServletRequest request) {
+    public UserInfoResponse userLogin(String userAccount, String userPassword, HttpServletRequest request) {
         // 校验参数
         if (StringUtils.isAnyBlank(userAccount, userPassword)) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "参数为空");
@@ -182,16 +182,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      * @param user 用户信息对象，不可为null
      * @return 登录用户响应对象，如果输入的用户对象为null，则返回null
      */
-    public UserLoginResponse getLoginUser(User user) {
+    public UserInfoResponse getLoginUser(User user) {
         // 检查传入的用户对象是否为null
         if (user == null) {
             return null;
         }
         // 创建登录用户响应对象
-        UserLoginResponse userLoginResponse = new UserLoginResponse();
+        UserInfoResponse userInfoResponse = new UserInfoResponse();
         // 将user对象的属性值复制到userLoginResponse对象中
-        BeanUtils.copyProperties(user, userLoginResponse);
-        return userLoginResponse;
+        BeanUtils.copyProperties(user, userInfoResponse);
+        return userInfoResponse;
     }
 
     /**
@@ -204,30 +204,20 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      */
     @Override
     public Boolean updateUser(UserUpdateRequest userUpdateRequest, HttpServletRequest request) {
-        // 从请求会话中获取当前登录的用户对象
-        Object userObj = request.getSession().getAttribute(USER_LOGIN_STATE);
-        // 检查获取的用户对象是否存在且是User类型
-        if (!(userObj instanceof User) ) {
-            throw new BusinessException(ErrorCode.NOT_LOGIN_ERROR);
-        }
-        User currentUser = (User) userObj;
-        if(currentUser.getId() == null){
+        User user = getLoginUser(request);
+        if(user.getId() == null){
             throw new BusinessException(ErrorCode.NOT_LOGIN_ERROR);
         }
         // 如果传入的用户密码非空，则加密后更新当前用户密码
         if (userUpdateRequest.getUserPassword() != null) {
             String encryptPassword = encryptPassword(userUpdateRequest.getUserPassword());
-            currentUser.setUserPassword(encryptPassword);
-        }
-        // 更新用户头像、个人简介和用户名，如果这些信息非空
-        if (userUpdateRequest.getUserAvatar() != null) {
-            currentUser.setUserAvatar(userUpdateRequest.getUserAvatar());
+            user.setUserPassword(encryptPassword);
         }
         if (userUpdateRequest.getUserProfile() != null) {
-            currentUser.setUserProfile(userUpdateRequest.getUserProfile());
+            user.setUserProfile(userUpdateRequest.getUserProfile());
         }
         if (userUpdateRequest.getUserName() != null) {
-            currentUser.setUserName(userUpdateRequest.getUserName());
+            user.setUserName(userUpdateRequest.getUserName());
         }
         // 更新用户角色，如果用户账号非空
         if (userUpdateRequest.getUserAccount() != null) {
@@ -239,17 +229,17 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                     throw new BusinessException(ErrorCode.PARAMS_ERROR, "该账号已被注册");
                 }
             }
-            currentUser.setUserAccount(userUpdateRequest.getUserAccount());
+            user.setUserAccount(userUpdateRequest.getUserAccount());
         }
         // 设置更新时间为当前时间
-        currentUser.setUpdateTime(new Date());
+        user.setUpdateTime(new Date());
         // 尝试根据当前用户ID更新用户信息，如果失败则抛出业务异常
-        if (!updateById(currentUser)) {
+        if (!updateById(user)) {
             throw new BusinessException(ErrorCode.OPERATION_ERROR);
         }
-        updateById(currentUser);
+        updateById(user);
         // 尝试更新传入的用户信息对象，返回更新结果
-        return updateById(currentUser);
+        return updateById(user);
     }
 
     /**

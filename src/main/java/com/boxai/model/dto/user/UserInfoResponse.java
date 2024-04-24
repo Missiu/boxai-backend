@@ -13,7 +13,7 @@ import java.util.Date;
  *
  * @author Hzh*/
 @Data
-public class UserLoginResponse implements Serializable {
+public class UserInfoResponse implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1656057941309142747L;

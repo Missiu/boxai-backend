@@ -102,4 +102,7 @@ knife4j:
 moonlight:
   api:
     url: https://api.moonshot.cn/v1/chat/completions
-    key: sk-4lLjQlxipwp1G0CEZIZIrdfEZ39zQkQj25j8TdaZKIC3FinG
+    key: sk-gzkAID0y1ikZgPG3paUDcic84tSIv8sMDeQftNGmthkNiRA7
+#    key: sk-4lLjQlxipwp1G0CEZIZIrdfEZ39zQkQj25j8TdaZKIC3FinG
+    tokenUrl: https://api.moonshot.cn/v1/tokenizers/estimate-token-count
+    balance: https://api.moonshot.cn/v1/users/me/balance

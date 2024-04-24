@@ -3,7 +3,7 @@ package com.boxai.service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.boxai.model.domain.User;
-import com.boxai.model.dto.user.UserLoginResponse;
+import com.boxai.model.dto.user.UserInfoResponse;
 import com.boxai.model.dto.user.UserQueryRequest;
 import com.boxai.model.dto.user.UserUpdateRequest;
 
@@ -32,7 +32,7 @@ public interface UserService extends IService<User> {
      * @param request HTTP请求对象，用于获取登录IP等信息
      * @return 登录成功返回用户信息及token等组成的响应对象，失败返回null
      */
-    UserLoginResponse userLogin(String userAccount, String userPassword, HttpServletRequest request);
+    UserInfoResponse userLogin(String userAccount, String userPassword, HttpServletRequest request);
 
     /**
      * 获取当前登录的用户信息
@@ -48,7 +48,7 @@ public interface UserService extends IService<User> {
      * @param user 用户对象
      * @return 登录用户响应信息
      */
-    UserLoginResponse getLoginUser(User user);
+    UserInfoResponse getLoginUser(User user);
 
     /**
      * 更新用户信息。

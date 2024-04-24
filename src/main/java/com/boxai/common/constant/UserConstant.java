@@ -18,9 +18,9 @@ public interface UserConstant {
     String DEFAULT_ROLE = "user";
 
     /**
-     * 管理员角色
+     * 高级用户角色
      */
-    String ADMIN_ROLE = "admin";
+    String VIP_ROLE = "vip";
 
     /**
      * 被封号

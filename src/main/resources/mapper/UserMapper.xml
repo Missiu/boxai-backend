@@ -11,8 +11,9 @@
             <result property="userName" column="userName" jdbcType="VARCHAR"/>
             <result property="userAvatar" column="userAvatar" jdbcType="VARCHAR"/>
             <result property="userProfile" column="userProfile" jdbcType="VARCHAR"/>
-            <result property="usedToken" column="usedToken" jdbcType="VARCHAR"/>
-            <result property="token" column="Token" jdbcType="VARCHAR"/>
+            <result property="availableBalance" column="availableBalance" jdbcType="DECIMAL"/>
+            <result property="voucherBalance" column="voucherBalance" jdbcType="DECIMAL"/>
+            <result property="cashBalance" column="cashBalance" jdbcType="DECIMAL"/>
             <result property="userRole" column="userRole" jdbcType="VARCHAR"/>
             <result property="createTime" column="createTime" jdbcType="TIMESTAMP"/>
             <result property="updateTime" column="updateTime" jdbcType="TIMESTAMP"/>
@@ -22,7 +23,8 @@
     <sql id="Base_Column_List">
         id,userAccount,userPassword,
         userName,userAvatar,userProfile,
-        usedToken,Token,userRole,
-        createTime,updateTime,isDelete
+        availableBalance,voucherBalance,cashBalance,
+        userRole,createTime,updateTime,
+        isDelete
     </sql>
 </mapper>
