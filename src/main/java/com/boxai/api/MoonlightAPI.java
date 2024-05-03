@@ -54,7 +54,7 @@ public class MoonlightAPI {
 
             if (response.isOk()) { // 检查HTTP状态码
                 JSONObject jsonObject = JSONUtil.parseObj(response.body());
-                String choices = jsonObject.getByPath("choices.message.content").toString();
+                String choices = jsonObject.getByPath("choices.message.content").toString().replaceAll("^\\[|\\]$","");;
                 logger.info("API Response: {}", choices); // 记录API响应
                 return choices;
             } else {

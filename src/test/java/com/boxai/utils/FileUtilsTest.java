@@ -59,4 +59,44 @@ class FileUtilsTest {
         System.out.println(content);
     }
 
+    @Test
+    void readFile() {
+    }
+
+    @Test
+    void readFiles() {
+    }
+
+    @Test
+    void extractFlagsContent() {
+    }
+
+    @Test
+    void codeExtractor() {
+        String input = "代码注释：\n" +
+                "```adadada\n" +
+                "package com.ybu.common; // 定义包名\n" +
+                "\n" +
+                "import lombok.Getter; // 导入lombok注解，用于生成getter方法\n" +
+                "\n" +
+                "/**\n" +
+                " * 业务异常类\n" +
+                " * \n" +
+                " * @Titile: ServiceException\n" +
+                " * @Author: Lucky\n" +
+                " * @Description: 业务异常\n" +
+                " */\n" +
+                "public class ServiceException extends RuntimeException { // 继承RuntimeException，创建自定义异常类\n" +
+                "    @Getter  // 使用lombok注解生成serviceCode的getter方法\n" +
+                "    private ServiceCode serviceCode; // 定义serviceCode属性，用于存储服务异常码\n" +
+                "\n" +
+                "    // 构造函数，接收服务异常码和服务异常信息\n" +
+                "    public ServiceException(ServiceCode serviceCode, String message) {\n" +
+                "        super(message); // 调用父类RuntimeException的构造方法，传入异常信息\n" +
+                "        this.serviceCode = serviceCode; // 设置服务异常码\n" +
+                "    }\n" +
+                "}\n" +
+                "```";
+        System.out.println(FileUtils.codeExtractor(input));
+    }
 }

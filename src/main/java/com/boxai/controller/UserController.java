@@ -3,6 +3,7 @@ package com.boxai.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.boxai.common.enums.ErrorCode;
 import com.boxai.exception.BusinessException;
+import com.boxai.mapper.UserMapper;
 import com.boxai.model.domain.User;
 import com.boxai.model.dto.common.BaseResponse;
 import com.boxai.model.dto.common.ResultResponse;
@@ -15,6 +16,10 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import java.util.Objects;
+
+import static com.boxai.common.enums.ErrorCode.PARAMS_ERROR;
+
 /**
  * @author Hzh
  */
@@ -25,6 +30,9 @@ public class UserController {
 
     @Resource
     private UserService userService;
+
+    @Resource
+    private UserMapper userMapper;
 
     /**
      * 用户注册
@@ -123,21 +131,56 @@ public class UserController {
         return ResultResponse.success(b);
     }
 
-    /**
-     * 更新用户信息
-     *
-     * @param userUpdateRequest 包含更新用户信息的请求体，不能为空且必须包含用户ID
-     * @return 返回操作结果的响应体，操作成功则返回true
-     * @throws BusinessException 如果用户更新请求体为空或缺少用户ID，抛出业务异常
-     */
-    @PostMapping("/update")
-    public BaseResponse<Boolean> updateUser(@RequestBody UserUpdateRequest userUpdateRequest,HttpServletRequest request) {
-        // 校验用户更新请求是否为空或缺少ID
-        if (userUpdateRequest == null) {
-            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+//    更新密码
+    @PostMapping("/update/password")
+    public BaseResponse<Integer> upPassword(@RequestBody UserUpPassword upPassword, HttpServletRequest request) {
+        User user = userService.getLoginUser(request); // 获取用户信息
+        if (user.getId() == null){
+            throw new BusinessException(PARAMS_ERROR);
         }
-        boolean result = userService.updateUser(userUpdateRequest,request);
-        // 返回更新成功的响应
+        // 校验请求对象是否为null或id是否合法
+        if (!Objects.equals(upPassword.getCheckPassword(), upPassword.getNewPassword())) {
+            throw new BusinessException(PARAMS_ERROR);
+        }
+        if (!Objects.equals(userService.encryptPassword(upPassword.getOldPassword()), user.getUserPassword())){
+            throw new BusinessException(PARAMS_ERROR);
+        }
+        // 对用户密码进行加密处理
+        String encryptPassword = userService.encryptPassword(upPassword.getNewPassword());
+
+        int result = userMapper.updateUserPassword(encryptPassword, user.getId());
+        // 返回更新结果
+        return ResultResponse.success(result);
+    }
+
+    // 更新用户信息
+    @PostMapping("/update/info")
+    public BaseResponse<Integer> upUserInfo(@RequestBody UserUpInfoRequest userUpInfoRequest, HttpServletRequest request) {
+        User user = userService.getLoginUser(request); // 获取用户信息
+        if (user.getId() == null){
+            throw new BusinessException(PARAMS_ERROR);
+        }
+        // 校验请求对象是否为null或id是否合法
+        if (userUpInfoRequest.getUserName() == null || userUpInfoRequest.getUserProfile() == null) {
+            throw new BusinessException(PARAMS_ERROR);
+        }
+        // 调用服务层方法，更新用户信息
+        int result = userMapper.updateUserInfo(userUpInfoRequest.getUserName(), userUpInfoRequest.getUserProfile(), user.getId());
+        // 返回更新结果
+        return ResultResponse.success(result);
+    }
+
+    @PostMapping("/update/account")
+    public BaseResponse<Integer> upAccount(@RequestBody UserUpInfoRequest userUpInfoRequest, HttpServletRequest request) {
+        User user = userService.getLoginUser(request);
+        if (user.getId() == null){
+            throw new BusinessException(PARAMS_ERROR);
+        }
+        // 校验请求对象是否为null或id是否合法
+        if (userUpInfoRequest.getUserAccount() == null) {
+            throw new BusinessException(PARAMS_ERROR);
+        }
+        int result = userMapper.updateUserAccount(userUpInfoRequest.getUserAccount(), user.getId());
         return ResultResponse.success(result);
     }
 

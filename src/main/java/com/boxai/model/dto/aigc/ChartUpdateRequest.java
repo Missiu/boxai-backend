@@ -1,10 +1,9 @@
 package com.boxai.model.dto.aigc;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
 
-import java.io.Serial;
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * 更新请求
@@ -12,48 +11,78 @@ import java.util.Date;
  */
 @Data
 public class ChartUpdateRequest implements Serializable {
-    @Serial
-    private static final long serialVersionUID = 178230794769133500L; // 序列化ID，用于版本控制
-
-    private Long id; // 数据记录的唯一标识符
-
     /**
-     * 分析数据的名称。用于标识不同的数据分析任务。
+     * id
      */
-    private String genName;
+    private Long id;
 
     /**
-     * 分析目标。描述进行数据分析的主要目的。
+     * 目标
      */
     private String goal;
 
     /**
-     * 原始数据。存储待分析数据的文本或其它格式信息。
+     * 分析的名称
      */
-    private String chatData;
+    private String genName;
 
     /**
-     * 生成的代码数据(备用)。用于存储分析过程中可能生成的代码或图表数据。
-     */
-    private String genChart;
-
-    /**
-     * 生成分析结论。存储数据分析后的结论性结果。
-     */
-    private String genResult;
-
-    /**
-     * 创建的用户id。标识哪个用户创建了此数据分析记录。
+     * 用户id
      */
     private Long userId;
 
     /**
-     * 更新时间。记录此数据分析记录最后一次更新的时间。
+     * 生成的代码注释
      */
-    private Date updateTime;
+    private String codeComment;
+
+    private String rawData;
 
     /**
-     * 是否删除。标记此记录是否被标记为删除，通常用于逻辑删除而非物理删除。
+     * 生成的代码简介
      */
-    private Integer isDelete;
+    private String codeProfile;
+
+    /**
+     * 生成的代码实体
+     */
+    private String codeEntity;
+
+    /**
+     * 生成的代码API
+     */
+    private String codeAPI;
+
+    /**
+     * 生成的代码运行
+     */
+    private String codeRun;
+
+    /**
+     * 生成的代码建议
+     */
+    private String codeSuggestion;
+
+    /**
+     * 代码规范-雷达图
+     */
+    private String codeNorm;
+
+    /**
+     * 代码规范-雷达图说明
+     */
+    private String codeNormStr;
+
+    /**
+     * 代码技术-饼状图
+     */
+    private String codeTechnology;
+
+    /**
+     * 代码目录-树状图
+     */
+    private String codeCataloguePath;
+
+    @TableField(exist = false)
+    private static final long serialVersionUID = 1L;
 }

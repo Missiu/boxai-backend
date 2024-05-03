@@ -27,4 +27,25 @@
         userRole,createTime,updateTime,
         isDelete
     </sql>
+
+<!--    更新密码-->
+    <update id="updateUserPassword" parameterType="com.boxai.model.domain.User">
+        update user
+        set userPassword = #{password}
+        where id = #{id}
+    </update>
+
+<!--    更新用户信息包含，用户名，用户简介-->
+
+    <update id="updateUserInfo"  parameterType="com.boxai.model.domain.User">
+        update user
+        set userName = #{username},userProfile = #{userProfile}
+        where id = #{id}
+    </update>
+<!--    更新账号信息-->
+    <update id="updateUserAccount"  parameterType="com.boxai.model.domain.User">
+        update user
+        set userAccount = #{userAccount}
+        where id = #{id}
+    </update>
 </mapper>

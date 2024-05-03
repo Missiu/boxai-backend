@@ -10,7 +10,6 @@ import com.boxai.mapper.UserMapper;
 import com.boxai.model.domain.User;
 import com.boxai.model.dto.user.UserInfoResponse;
 import com.boxai.model.dto.user.UserQueryRequest;
-import com.boxai.model.dto.user.UserUpdateRequest;
 import com.boxai.service.UserService;
 import com.boxai.utils.SqlUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +19,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
 
 import static com.boxai.common.constant.UserConstant.USER_LOGIN_STATE;
 
@@ -145,7 +143,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      * @param plainPassword 明文密码。
      * @return 返回加密后的密码字符串。
      */
-    private String encryptPassword(String plainPassword) {
+    @Override
+    public String encryptPassword(String plainPassword) {
         // 使用更安全的bcrypt算法或其他加盐哈希算法
         return DigestUtils.sha256Hex((SALT + plainPassword).getBytes());
     }
@@ -194,53 +193,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return userInfoResponse;
     }
 
-    /**
-     * 更新用户信息。
-     *
-     * @param userUpdateRequest    用户信息对象，包含需要更新的用户信息。
-     * @param request HttpServletRequest对象，用于获取当前登录用户信息。
-     * @return 更新操作的布尔结果。成功返回true，失败返回false。
-     * @throws BusinessException 如果用户未登录或更新操作失败，则抛出业务异常。
-     */
-    @Override
-    public Boolean updateUser(UserUpdateRequest userUpdateRequest, HttpServletRequest request) {
-        User user = getLoginUser(request);
-        if(user.getId() == null){
-            throw new BusinessException(ErrorCode.NOT_LOGIN_ERROR);
-        }
-        // 如果传入的用户密码非空，则加密后更新当前用户密码
-        if (userUpdateRequest.getUserPassword() != null) {
-            String encryptPassword = encryptPassword(userUpdateRequest.getUserPassword());
-            user.setUserPassword(encryptPassword);
-        }
-        if (userUpdateRequest.getUserProfile() != null) {
-            user.setUserProfile(userUpdateRequest.getUserProfile());
-        }
-        if (userUpdateRequest.getUserName() != null) {
-            user.setUserName(userUpdateRequest.getUserName());
-        }
-        // 更新用户角色，如果用户账号非空
-        if (userUpdateRequest.getUserAccount() != null) {
-            synchronized (lock) {
-                QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-                queryWrapper.eq("userAccount", userUpdateRequest.getUserAccount());
-                long count = this.baseMapper.selectCount(queryWrapper);
-                if (count > 0) {
-                    throw new BusinessException(ErrorCode.PARAMS_ERROR, "该账号已被注册");
-                }
-            }
-            user.setUserAccount(userUpdateRequest.getUserAccount());
-        }
-        // 设置更新时间为当前时间
-        user.setUpdateTime(new Date());
-        // 尝试根据当前用户ID更新用户信息，如果失败则抛出业务异常
-        if (!updateById(user)) {
-            throw new BusinessException(ErrorCode.OPERATION_ERROR);
-        }
-        updateById(user);
-        // 尝试更新传入的用户信息对象，返回更新结果
-        return updateById(user);
-    }
 
     /**
      * 判断用户是否为管理员

@@ -107,6 +107,12 @@ public class Result implements Serializable {
      */
     private String codeCataloguePath;
 
+    /**
+     * 原始数据
+     */
+    private String rawData;
+
+
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 }

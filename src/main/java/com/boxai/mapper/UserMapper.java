@@ -11,6 +11,14 @@ import com.boxai.model.domain.User;
 */
 public interface UserMapper extends BaseMapper<User> {
 
+//    更新密码
+    int updateUserPassword(String password ,Long id);
+
+//    更新用户信息包含，用户名，用户简介
+    int updateUserInfo(String username, String userProfile,Long id);
+
+//    更新账号信息
+    int updateUserAccount(String userAccount,Long id);
 }
 
 

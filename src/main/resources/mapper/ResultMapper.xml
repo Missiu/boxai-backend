@@ -4,6 +4,38 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.boxai.mapper.ResultMapper">
 
+    <!--    更新生成名称-->
+    <update id="updateGenName" parameterType="com.boxai.model.domain.Result">
+        UPDATE result
+        SET genName = #{genName}        WHERE id = #{id}    </update>
+    <!--    更新代码注释-->
+    <update id="updateCodeComment" parameterType="com.boxai.model.domain.Result">
+        UPDATE result
+        SET codeComment = #{codeComment}        WHERE id = #{id}    </update>
+    <!--    更新代码简介-->
+    <update id="updateCodeProfile" parameterType="com.boxai.model.domain.Result">
+        UPDATE result
+        SET codeProfile = #{codeProfile}        WHERE id = #{id}    </update>
+    <!--    更新codeAPI-->
+    <update id="updateCodeAPI" parameterType="com.boxai.model.domain.Result">
+        UPDATE result
+        SET codeAPI = #{codeAPI}        WHERE id = #{id}    </update>
+    <!--    更新codeRun-->
+    <update id="updateCodeRun" parameterType="com.boxai.model.domain.Result">
+        UPDATE result
+        SET codeRun = #{codeRun}        WHERE id = #{id}    </update>
+    <!--    更新codeSuggestion-->
+    <update id="updateCodeSuggestion" parameterType="com.boxai.model.domain.Result">
+        UPDATE result
+        SET codeSuggestion = #{codeSuggestion}        WHERE id = #{id}    </update>
+    <!--    更新codeNormStr-->
+    <update id="updateCodeNormStr" parameterType="com.boxai.model.domain.Result">
+        UPDATE result
+        SET codeNormStr = #{codeNormStr}        WHERE id = #{id}    </update>
+    <!--    更新codeCataloguePath-->
+    <update id="updateCodeCataloguePath" parameterType="com.boxai.model.domain.Result">
+        UPDATE result
+        SET codeCataloguePath = #{codeCataloguePath}        WHERE id = #{id}    </update>
     <resultMap id="BaseResultMap" type="com.boxai.model.domain.Result">
             <id property="id" column="id" jdbcType="BIGINT"/>
             <result property="goal" column="goal" jdbcType="VARCHAR"/>
@@ -23,6 +55,8 @@
             <result property="codeNormStr" column="codeNormStr" jdbcType="VARCHAR"/>
             <result property="codeTechnology" column="codeTechnology" jdbcType="VARCHAR"/>
             <result property="codeCataloguePath" column="codeCataloguePath" jdbcType="VARCHAR"/>
+            <result property="rawData" column="rawData" jdbcType="VARCHAR"/>
+
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -31,6 +65,7 @@
         usedToken,userId,codeComment,
         codeProfile,codeEntity,codeAPI,
         codeRun,codeSuggestion,codeNorm,
-        codeNormStr,codeTechnology,codeCataloguePath
+        codeNormStr,codeTechnology,codeCataloguePath,
+        rawData
     </sql>
 </mapper>

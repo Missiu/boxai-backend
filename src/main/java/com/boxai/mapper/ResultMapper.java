@@ -1,7 +1,7 @@
 package com.boxai.mapper;
 
-import com.boxai.model.domain.Result;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.boxai.model.domain.Result;
 
 /**
 * @author Hzh
@@ -11,6 +11,22 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 */
 public interface ResultMapper extends BaseMapper<Result> {
 
+//    更新生成名称
+    int updateGenName(Long id, String genName);
+    // 更新代码注释
+    int updateCodeComment(Long id, String codeComment);
+//    更新代码简介
+    int updateCodeProfile(Long id, String codeProfile);
+//    更新codeAPI
+    int updateCodeAPI(Long id, String codeAPI);
+//    更新codeRun
+    int updateCodeRun(Long id, String codeRun);
+//    更新codeSuggestion
+    int updateCodeSuggestion(Long id, String codeSuggestion);
+//    更新codeNormStr
+    int updateCodeNormStr(Long id, String codeNormStr);
+//    更新codeCataloguePath
+    int updateCodeCataloguePath(Long id, String codeCataloguePath);
 }
 
 

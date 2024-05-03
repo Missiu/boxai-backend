@@ -7,6 +7,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 // 文件读取工具类
 public class FileUtils {
@@ -56,5 +60,35 @@ public class FileUtils {
             }
         }
         return sb.toString();
+    }
+
+
+    /**
+     * 从给定的文本中提取所有位于"【【标志】】"之间的内容。
+     *
+     * @param text 包含一个或多个"【【标志】】"标记的原始文本。
+     * @return 包含所有提取内容的字符串列表，每个字符串代表一个"【【标志】】"标记间的内容。
+     */
+    public static List<String> extractFlagsContent(String text) {
+        // 编译正则表达式，用于匹配"【【标志】】"之间的内容
+        Pattern pattern = Pattern.compile("(?s)【【标志】】(.*?)(?=【【标志】】|$)");
+        Matcher matcher = pattern.matcher(text);
+        List<String> contents = new ArrayList<>();
+        // 遍历文本，找到所有匹配项并添加到列表中
+        while (matcher.find()) {
+            String extractedContent = matcher.group(1); // 提取匹配项中的具体内容
+            contents.add(extractedContent);
+        }
+        return contents;
+    }
+
+    public static String codeExtractor(String code) {
+        Pattern pattern = Pattern.compile("```[a-z]*\\s*([\\s\\S]*?)\\s*```");
+        Matcher matcher = pattern.matcher(code);
+        if (matcher.find()) {
+            return matcher.group(1);
+        } else {
+            return null;
+        }
     }
 }

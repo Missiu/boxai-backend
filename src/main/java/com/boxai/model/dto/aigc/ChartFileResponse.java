@@ -37,6 +37,8 @@ public class ChartFileResponse implements Serializable {
      * 生成的代码注释
      */
     private String codeComment;
+    private String codeTechnology;
+    private String codeRun;
 
     /**
      * 生成的代码简介

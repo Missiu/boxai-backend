@@ -30,6 +30,4 @@ public interface ResultService extends IService<Result> {
      * @return 返回配置了查询条件的QueryWrapper<Chart>对象，用于图表数据的查询。
      */
     QueryWrapper<Result> getQueryWrapper(ChartQueryRequest chartQueryRequest);
-     String codeExtractor(String code);
-    List<String> extractFlagsContent(String text);
 }

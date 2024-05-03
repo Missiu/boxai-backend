@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.boxai.model.domain.User;
 import com.boxai.model.dto.user.UserInfoResponse;
 import com.boxai.model.dto.user.UserQueryRequest;
-import com.boxai.model.dto.user.UserUpdateRequest;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -50,15 +49,8 @@ public interface UserService extends IService<User> {
      */
     UserInfoResponse getLoginUser(User user);
 
-    /**
-     * 更新用户信息。
-     *
-     * @param userUpdateRequest 包含更新后用户信息的对象。
-     * @param request HttpServletRequest对象，用于获取请求相关信息（例如用户身份验证信息）。
-     * @return 返回一个布尔值，表示用户信息是否更新成功。成功返回true，失败返回false。
-     */
-    Boolean updateUser(UserUpdateRequest userUpdateRequest, HttpServletRequest request);
 
+    String encryptPassword(String plainPassword);
 
     /**
      * 判断当前请求是否来自管理员
