@@ -10,9 +10,11 @@ import com.boxai.exception.BusinessException;
 import com.boxai.mapper.PostFavourMapper;
 import com.boxai.model.domain.Post;
 import com.boxai.model.domain.PostFavour;
+import com.boxai.model.domain.Result;
 import com.boxai.model.domain.User;
 import com.boxai.service.PostFavourService;
 import com.boxai.service.PostService;
+import com.boxai.service.ResultService;
 import org.springframework.aop.framework.AopContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,7 +31,8 @@ public class PostFavourServiceImpl extends ServiceImpl<PostFavourMapper, PostFav
     implements PostFavourService{
     @Resource
     private PostService postService;
-
+@Resource
+private ResultService resultService;
     /**
      * 帖子收藏
      *
@@ -40,7 +43,7 @@ public class PostFavourServiceImpl extends ServiceImpl<PostFavourMapper, PostFav
     @Override
     public int doPostFavour(long postId, User loginUser) {
         // 判断是否存在
-        Post post = postService.getById(postId);
+        Result post = resultService.getById(postId);
         if (post == null) {
             throw new BusinessException(ErrorCode.NOT_FOUND_ERROR);
         }
@@ -84,7 +87,7 @@ public class PostFavourServiceImpl extends ServiceImpl<PostFavourMapper, PostFav
             if (result) {
                 // 帖子收藏数 - 1
                 result = postService.update()
-                        .eq("id", postId)
+                        .eq("resultId", postId)
                         .gt("favourNum", 0)
                         .setSql("favourNum = favourNum - 1")
                         .update();
@@ -98,7 +101,7 @@ public class PostFavourServiceImpl extends ServiceImpl<PostFavourMapper, PostFav
             if (result) {
                 // 帖子收藏数 + 1
                 result = postService.update()
-                        .eq("id", postId)
+                        .eq("resultId", postId)
                         .setSql("favourNum = favourNum + 1")
                         .update();
                 return result ? 1 : 0;

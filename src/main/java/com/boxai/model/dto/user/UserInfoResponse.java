@@ -1,11 +1,10 @@
 package com.boxai.model.dto.user;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -17,10 +16,7 @@ public class UserInfoResponse implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1656057941309142747L;
-    /**
-     * id
-     */
-    @TableId(type = IdType.ASSIGN_ID)
+
     private Long id;
 
     /**
@@ -42,11 +38,21 @@ public class UserInfoResponse implements Serializable {
      * 用户的简介信息，可包含个人描述等
      */
     private String userProfile;
+    /**
+     * 可用余额
+     */
+    private BigDecimal availableBalance;
 
     /**
-     * 已使用的AI服务令牌数量
+     * 代金券余额, 不会为负数
      */
-    private String usedToken;
+    private BigDecimal voucherBalance;
+
+    /**
+     * 现金余额, 可能为负数, 代表用户欠费
+     */
+    private BigDecimal cashBalance;
+
 
     /**
      * 用户拥有的总AI服务令牌数量

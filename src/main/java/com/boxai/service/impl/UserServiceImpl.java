@@ -2,6 +2,7 @@ package com.boxai.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.boxai.api.MoonlightAPI;
 import com.boxai.common.constant.CommonConstant;
 import com.boxai.common.enums.ErrorCode;
 import com.boxai.common.enums.UserRoleEnum;
@@ -18,7 +19,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+
+import java.math.BigDecimal;
+import java.util.Map;
 
 import static com.boxai.common.constant.UserConstant.USER_LOGIN_STATE;
 
@@ -30,7 +35,11 @@ import static com.boxai.common.constant.UserConstant.USER_LOGIN_STATE;
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
     public static final String SALT = "HZHBoxAI"; // 密码加密的盐值
 
+    @Resource
+    private MoonlightAPI moonlightAPI;
 
+    @Resource
+    private UserMapper  userMapper;
     private final Object lock = new Object();
 
     /**
@@ -70,9 +79,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                 throw new BusinessException(ErrorCode.PARAMS_ERROR, "该账号已被注册");
             }
         }
+        Map<String, Double> x = moonlightAPI.fetchBalance();
         // 对用户密码进行加密处理
         String encryptPassword = encryptPassword(userPassword);
         User user = new User();
+        user.setAvailableBalance(BigDecimal.valueOf(x.get("available_balance")));
+        user.setVoucherBalance(BigDecimal.valueOf(x.get("voucher_balance")));
+        user.setCashBalance(BigDecimal.valueOf(x.get("cash_balance")));
         user.setUserAccount(userAccount);
         user.setUserPassword(encryptPassword);
         boolean saveResult = this.save(user); // 假设save方法负责将用户对象保存到数据库
@@ -103,6 +116,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         if (userPassword.length() < 8) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "密码错误");
         }
+
         // 加密密码
         String encryptPassword = encryptPassword(userPassword);
         // 查询用户是否存在
@@ -164,9 +178,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         if (!(userObj instanceof User)) {
             throw new BusinessException(ErrorCode.NOT_LOGIN_ERROR);
         }
+
         User currentUser = (User) userObj;
         // 根据用户ID从数据库或缓存中重新获取用户信息
         long userId = currentUser.getId();
+        Map<String, Double> x = moonlightAPI.fetchBalance();
+        userMapper.updateBalance(BigDecimal.valueOf(x.get("available_balance")), BigDecimal.valueOf(x.get("voucher_balance")), BigDecimal.valueOf(x.get("cash_balance")), userId);
         currentUser = this.getById(userId);
         // 检查获取的用户信息是否为空
         if (currentUser == null) {
@@ -186,6 +203,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         if (user == null) {
             return null;
         }
+        Map<String, Double> x = moonlightAPI.fetchBalance();
+        userMapper.updateBalance(BigDecimal.valueOf(x.get("available_balance")), BigDecimal.valueOf(x.get("voucher_balance")), BigDecimal.valueOf(x.get("cash_balance")), user.getId());
         // 创建登录用户响应对象
         UserInfoResponse userInfoResponse = new UserInfoResponse();
         // 将user对象的属性值复制到userLoginResponse对象中

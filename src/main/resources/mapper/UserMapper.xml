@@ -35,11 +35,23 @@
         where id = #{id}
     </update>
 
+    <!--    更新密码-->
+    <update id="updateBalance" parameterType="com.boxai.model.domain.User">
+        update user
+        set availableBalance = #{availableBalance},voucherBalance = #{voucherBalance},cashBalance = #{cashBalance}
+        where id = #{id}
+    </update>
+
 <!--    更新用户信息包含，用户名，用户简介-->
 
-    <update id="updateUserInfo"  parameterType="com.boxai.model.domain.User">
+    <update id="updateUserName"  parameterType="com.boxai.model.domain.User">
         update user
-        set userName = #{username},userProfile = #{userProfile}
+        set userName = #{username}
+        where id = #{id}
+    </update>
+    <update id="updateUserProfile"  parameterType="com.boxai.model.domain.User">
+        update user
+        set userProfile = #{userProfile}
         where id = #{id}
     </update>
 <!--    更新账号信息-->

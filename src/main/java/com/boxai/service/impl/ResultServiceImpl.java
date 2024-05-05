@@ -103,7 +103,7 @@ public class ResultServiceImpl extends ServiceImpl<ResultMapper, Result> impleme
     public QueryWrapper<Result> getQueryWrapper(ChartQueryRequest chartQueryRequest) {
         QueryWrapper<Result> queryWrapper = new QueryWrapper<>();
 
-        Long id = chartQueryRequest.getUserId();
+        Long id = chartQueryRequest.getId();
         String genName = chartQueryRequest.getGenName();
         String goal = chartQueryRequest.getGoal();
         Long userId = chartQueryRequest.getUserId();
@@ -111,10 +111,10 @@ public class ResultServiceImpl extends ServiceImpl<ResultMapper, Result> impleme
         String sortOrder = chartQueryRequest.getSortOrder();
 
         // 根据请求参数构建查询条件
-//        queryWrapper.eq(id != null && id > 0, "id", id); // 如果id存在且大于0，则添加id的等于条件
+        queryWrapper.eq(id != null && id > 0, "id", id); // 如果id存在且大于0，则添加id的等于条件
         queryWrapper.eq(org.apache.commons.lang3.StringUtils.isNotBlank(goal), "goal", goal); // 如果goal非空，则添加goal的等于条件
         queryWrapper.like(org.apache.commons.lang3.StringUtils.isNotBlank(genName), "genName", genName); // 如果genName非空，则添加genName的模糊查询条件
-        queryWrapper.eq(ObjectUtils.isNotEmpty(userId), "userId", userId); // 如果userId非空，则添加userId的等于条件
+        queryWrapper.eq(userId != null && userId > 0, "userId", userId); // 如果userId非空，则添加userId的等于条件
         queryWrapper.eq("isDelete", false); // 添加isDelete的等于条件，表示未被删除的记录
         // 根据排序字段和排序顺序添加排序条件
         queryWrapper.orderBy(SqlUtils.validSortField(sortField), sortOrder.equals(CommonConstant.SORT_ORDER_ASC),

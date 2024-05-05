@@ -4,12 +4,13 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.boxai.common.enums.ErrorCode;
 import com.boxai.exception.BusinessException;
-import com.boxai.model.domain.Post;
+import com.boxai.mapper.PostThumbMapper;
 import com.boxai.model.domain.PostThumb;
+import com.boxai.model.domain.Result;
 import com.boxai.model.domain.User;
 import com.boxai.service.PostService;
 import com.boxai.service.PostThumbService;
-import com.boxai.mapper.PostThumbMapper;
+import com.boxai.service.ResultService;
 import org.springframework.aop.framework.AopContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +27,9 @@ public class PostThumbServiceImpl extends ServiceImpl<PostThumbMapper, PostThumb
     implements PostThumbService{
     @Resource
     private PostService postService;
+
+    @Resource
+    private ResultService resultService;
     /**
      * 点赞
      *
@@ -36,8 +40,8 @@ public class PostThumbServiceImpl extends ServiceImpl<PostThumbMapper, PostThumb
     @Override
     public int doPostThumb(long postId, User loginUser) {
         // 判断实体是否存在，根据类别获取实体
-        Post post = postService.getById(postId);
-        if (post == null) {
+        Result result = resultService.getById(postId);
+        if (result == null) {
             throw new BusinessException(ErrorCode.NOT_FOUND_ERROR);
         }
         // 是否已点赞
@@ -71,7 +75,7 @@ public class PostThumbServiceImpl extends ServiceImpl<PostThumbMapper, PostThumb
             if (result) {
                 // 点赞数 - 1
                 result = postService.update()
-                        .eq("id", postId)
+                        .eq("resultId", postId)
                         .gt("thumbNum", 0)
                         .setSql("thumbNum = thumbNum - 1")
                         .update();
@@ -85,7 +89,7 @@ public class PostThumbServiceImpl extends ServiceImpl<PostThumbMapper, PostThumb
             if (result) {
                 // 点赞数 + 1
                 result = postService.update()
-                        .eq("id", postId)
+                        .eq("resultId", postId)
                         .setSql("thumbNum = thumbNum + 1")
                         .update();
                 return result ? 1 : 0;

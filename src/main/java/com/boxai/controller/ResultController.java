@@ -91,20 +91,20 @@ public class ResultController {
 
         // 生成数据
         // 代码注释内容 提取
-        chart.setCodeComment(codeExtractor(stringList.get(0)) != null ? codeExtractor(stringList.get(0)) : " ");
+//        chart.setCodeComment(codeExtractor(stringList.get(0)) != null ? codeExtractor(stringList.get(0)) : stringList.get(0));
         // 项目简介
-        chart.setCodeProfile(stringList.get(1));
+        chart.setCodeProfile(stringList.get(0));
         // 项目技术栈
-        chart.setCodeTechnology(codeExtractor(stringList.get(2)) != null ? codeExtractor(stringList.get(2)) : " ");
+        chart.setCodeTechnology(codeExtractor(stringList.get(1)) != null ? codeExtractor(stringList.get(1)) : stringList.get(1));
         // 运行构建
-        chart.setCodeRun(stringList.get(3));
+        chart.setCodeRun(stringList.get(2));
         // 代码规范描述
-        chart.setCodeNormStr(stringList.get(4));
+        chart.setCodeNormStr(stringList.get(3));
         // 代码规范图
-        chart.setCodeNorm(codeExtractor(stringList.get(5)) != null ? codeExtractor(stringList.get(5)) : " ");
+        chart.setCodeNorm(codeExtractor(stringList.get(4)) != null ? codeExtractor(stringList.get(4)) : stringList.get(4));
         // 优化建议
-        chart.setCodeSuggestion(stringList.get(6));
-        chart.setUsedToken(stringList.get(7));
+        chart.setCodeSuggestion(stringList.get(5));
+        chart.setUsedToken(stringList.get(stringList.size()-1));
         // 保存图表信息
         resultService.save(chart);
         // 响应图表信息
@@ -154,10 +154,9 @@ public class ResultController {
         // 从请求中获取生成名称和目标
         String genName = chartGenRequest.getGenName();
         String goal = chartGenRequest.getGoal();
-
+        List<String> stringList = null;
         String readFile = readFiles(multipartFiles); // 读取文件内容
-        List<String> stringList = resultService.filesAIGC(goal, readFile);
-
+        stringList = resultService.filesAIGC(goal, readFile);
         Result chart = new Result();
         // 初始数据
         chart.setGoal(goal);
@@ -171,12 +170,12 @@ public class ResultController {
         // 运行
         chart.setCodeRun(stringList.get(2));
         // 实体
-        chart.setCodeEntity(codeExtractor(stringList.get(3)) != null ? codeExtractor(stringList.get(3)) : " ");
+        chart.setCodeEntity(codeExtractor(stringList.get(3)) != null ? codeExtractor(stringList.get(3)) : stringList.get(3));
         // 接口
         chart.setCodeAPI(stringList.get(4));
         chart.setCodeNormStr(stringList.get(5));
-        chart.setCodeNorm(codeExtractor(stringList.get(6)) != null ? codeExtractor(stringList.get(6)) : " ");
-        chart.setCodeTechnology(codeExtractor(stringList.get(7)) != null ? codeExtractor(stringList.get(7)) : " ");
+        chart.setCodeNorm(codeExtractor(stringList.get(6)) != null ? codeExtractor(stringList.get(6)) : stringList.get(6));
+        chart.setCodeTechnology(codeExtractor(stringList.get(7)) != null ? codeExtractor(stringList.get(7)) :stringList.get(7));
         chart.setCodeSuggestion(stringList.get(8));
         chart.setUsedToken(stringList.get(stringList.size()-1));
         resultService.save(chart);
@@ -289,9 +288,11 @@ public class ResultController {
      * @throws BusinessException 如果请求对象为null或id不合法，抛出业务异常。
      */
     @PostMapping("/update/genName")
-    public BaseResponse<Integer> updateGenName(@RequestBody ChartUpdateRequest chartUpdateRequest) {
+    public BaseResponse<Integer> updateGenName(@RequestBody ChartUpdateRequest chartUpdateRequest,HttpServletRequest request) {
+        // 获取登录用户信息
+        User user = userService.getLoginUser(request);
         // 校验请求对象是否为null或id是否合法
-        if (chartUpdateRequest == null || chartUpdateRequest.getId() <= 0 || chartUpdateRequest.getUserId() <= 0) {
+        if (chartUpdateRequest.getGenName() == null || user.getId() == null ) {
             throw new BusinessException(PARAMS_ERROR);
         }
         int result = resultMapper.updateGenName(chartUpdateRequest.getId(), chartUpdateRequest.getGenName());
@@ -300,9 +301,11 @@ public class ResultController {
     }
 
     @PostMapping("/update/codeComment")
-    public BaseResponse<Integer> updateCodeComment(@RequestBody ChartUpdateRequest chartUpdateRequest) {
+    public BaseResponse<Integer> updateCodeComment(@RequestBody ChartUpdateRequest chartUpdateRequest,HttpServletRequest request) {
+        // 获取登录用户信息
+        User user = userService.getLoginUser(request);
         // 校验请求对象是否为null或id是否合法
-        if (chartUpdateRequest == null || chartUpdateRequest.getId() <= 0 || chartUpdateRequest.getUserId() <= 0) {
+        if (chartUpdateRequest == null || chartUpdateRequest.getId() <= 0 || user.getId() <= 0) {
             throw new BusinessException(PARAMS_ERROR);
         }
         int result = resultMapper.updateCodeComment(chartUpdateRequest.getId(), chartUpdateRequest.getCodeComment());
@@ -310,9 +313,11 @@ public class ResultController {
         return ResultResponse.success(result);
     }
     @PostMapping("/update/codeCataloguePath")
-    public BaseResponse<Integer> updateCodeCataloguePath(@RequestBody ChartUpdateRequest chartUpdateRequest) {
+    public BaseResponse<Integer> updateCodeCataloguePath(@RequestBody ChartUpdateRequest chartUpdateRequest,HttpServletRequest request) {
+        // 获取登录用户信息
+        User user = userService.getLoginUser(request);
         // 校验请求对象是否为null或id是否合法
-        if (chartUpdateRequest == null || chartUpdateRequest.getId() <= 0 || chartUpdateRequest.getUserId() <= 0) {
+        if (chartUpdateRequest == null || chartUpdateRequest.getId() <= 0 || user.getId() <= 0) {
             throw new BusinessException(PARAMS_ERROR);
         }
         int result = resultMapper.updateCodeCataloguePath(chartUpdateRequest.getId(), chartUpdateRequest.getCodeCataloguePath());
@@ -320,9 +325,11 @@ public class ResultController {
         return ResultResponse.success(result);
     }
     @PostMapping("/update/codeProfile")
-    public BaseResponse<Integer> updateCodeProfile(@RequestBody ChartUpdateRequest chartUpdateRequest) {
+    public BaseResponse<Integer> updateCodeProfile(@RequestBody ChartUpdateRequest chartUpdateRequest,HttpServletRequest request) {
+        // 获取登录用户信息
+        User user = userService.getLoginUser(request);
         // 校验请求对象是否为null或id是否合法
-        if (chartUpdateRequest == null || chartUpdateRequest.getId() <= 0 || chartUpdateRequest.getUserId() <= 0) {
+        if (chartUpdateRequest == null || chartUpdateRequest.getId() <= 0 || user.getId() <= 0) {
             throw new BusinessException(PARAMS_ERROR);
         }
         int result = resultMapper.updateCodeProfile(chartUpdateRequest.getId(), chartUpdateRequest.getCodeProfile());
@@ -330,9 +337,11 @@ public class ResultController {
         return ResultResponse.success(result);
     }
     @PostMapping("/update/codeAPI")
-    public BaseResponse<Integer> updateCodeAPI(@RequestBody ChartUpdateRequest chartUpdateRequest) {
+    public BaseResponse<Integer> updateCodeAPI(@RequestBody ChartUpdateRequest chartUpdateRequest,HttpServletRequest request) {
+        // 获取登录用户信息
+        User user = userService.getLoginUser(request);
         // 校验请求对象是否为null或id是否合法
-        if (chartUpdateRequest == null || chartUpdateRequest.getId() <= 0 || chartUpdateRequest.getUserId() <= 0) {
+        if (chartUpdateRequest == null || chartUpdateRequest.getId() <= 0 || user.getId() <= 0) {
             throw new BusinessException(PARAMS_ERROR);
         }
         int result = resultMapper.updateCodeAPI(chartUpdateRequest.getId(), chartUpdateRequest.getCodeAPI());
@@ -340,9 +349,11 @@ public class ResultController {
         return ResultResponse.success(result);
     }
     @PostMapping("/update/codeRun")
-    public BaseResponse<Integer> updateCodeRun(@RequestBody ChartUpdateRequest chartUpdateRequest) {
+    public BaseResponse<Integer> updateCodeRun(@RequestBody ChartUpdateRequest chartUpdateRequest,HttpServletRequest request) {
+        // 获取登录用户信息
+        User user = userService.getLoginUser(request);
         // 校验请求对象是否为null或id是否合法
-        if (chartUpdateRequest == null || chartUpdateRequest.getId() <= 0 || chartUpdateRequest.getUserId() <= 0) {
+        if (chartUpdateRequest == null || chartUpdateRequest.getId() <= 0 || user.getId() <= 0) {
             throw new BusinessException(PARAMS_ERROR);
         }
         int result = resultMapper.updateCodeRun(chartUpdateRequest.getId(), chartUpdateRequest.getCodeRun());
@@ -350,9 +361,11 @@ public class ResultController {
         return ResultResponse.success(result);
     }
     @PostMapping("/update/codeSuggestion")
-    public BaseResponse<Integer> updateCodeSuggestion(@RequestBody ChartUpdateRequest chartUpdateRequest) {
+    public BaseResponse<Integer> updateCodeSuggestion(@RequestBody ChartUpdateRequest chartUpdateRequest,HttpServletRequest request) {
+        // 获取登录用户信息
+        User user = userService.getLoginUser(request);
         // 校验请求对象是否为null或id是否合法
-        if (chartUpdateRequest == null || chartUpdateRequest.getId() <= 0 || chartUpdateRequest.getUserId() <= 0) {
+        if (chartUpdateRequest == null || chartUpdateRequest.getId() <= 0 || user.getId() <= 0) {
             throw new BusinessException(PARAMS_ERROR);
         }
         int result = resultMapper.updateCodeSuggestion(chartUpdateRequest.getId(), chartUpdateRequest.getCodeSuggestion());
@@ -361,9 +374,11 @@ public class ResultController {
     }
 
     @PostMapping("/update/codeNormStr")
-    public BaseResponse<Integer> updateCodeNormStr(@RequestBody ChartUpdateRequest chartUpdateRequest) {
+    public BaseResponse<Integer> updateCodeNormStr(@RequestBody ChartUpdateRequest chartUpdateRequest,HttpServletRequest request) {
+        // 获取登录用户信息
+        User user = userService.getLoginUser(request);
         // 校验请求对象是否为null或id是否合法
-        if (chartUpdateRequest == null || chartUpdateRequest.getId() <= 0 || chartUpdateRequest.getUserId() <= 0) {
+        if (chartUpdateRequest == null || chartUpdateRequest.getId() <= 0 || user.getId() <= 0) {
             throw new BusinessException(PARAMS_ERROR);
         }
         int result = resultMapper.updateCodeNormStr(chartUpdateRequest.getId(), chartUpdateRequest.getCodeNormStr());
@@ -377,7 +392,7 @@ public class ResultController {
      * @param request           用户的HTTP请求，用于获取登录用户信息
      * @return 返回图表分页列表的响应体，包含查询结果和页码信息
      */
-    @PostMapping("/list/page")
+    @PostMapping("/list/my/page")
     public BaseResponse<Page<Result>> listMyChartByPage(@RequestBody ChartQueryRequest chartQueryRequest,
                                                         HttpServletRequest request) {
         // 校验查询请求体是否为null
@@ -387,6 +402,25 @@ public class ResultController {
         // 获取登录用户信息，并设置到查询请求中
         User loginUser = userService.getLoginUser(request);
         chartQueryRequest.setUserId(loginUser.getId());
+        // 获取当前页码和每页大小
+        long current = chartQueryRequest.getCurrent();
+        long size = chartQueryRequest.getPageSize();
+        // 限制每页大小不超过20条，超过则抛出业务异常
+        ThrowUtils.throwIf(size > 20, PARAMS_ERROR);
+        // 执行图表分页查询
+        Page<Result> chartPage = resultService.page(new Page<>(current, size),
+                resultService.getQueryWrapper(chartQueryRequest));
+        // 返回查询结果的成功响应
+        return ResultResponse.success(chartPage);
+    }
+
+    @PostMapping("/list/page")
+    public BaseResponse<Page<Result>> listChartByPage(@RequestBody ChartQueryRequest chartQueryRequest,
+                                                        HttpServletRequest request) {
+        // 校验查询请求体是否为null
+        if (chartQueryRequest == null) {
+            throw new BusinessException(PARAMS_ERROR);
+        }
         // 获取当前页码和每页大小
         long current = chartQueryRequest.getCurrent();
         long size = chartQueryRequest.getPageSize();

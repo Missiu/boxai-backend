@@ -13,11 +13,12 @@ import javax.servlet.http.HttpServletRequest;
  */
 public interface UserService extends IService<User> {
 
+
     /**
      * 用户注册
      *
-     * @param userAccount 用户账号
-     * @param userPassword 用户密码
+     * @param userAccount   用户账号
+     * @param userPassword  用户密码
      * @param checkPassword 验证密码，用于确认密码输入正确
      * @return 注册成功的用户ID，出错返回-1
      */
@@ -26,9 +27,9 @@ public interface UserService extends IService<User> {
     /**
      * 用户登录
      *
-     * @param userAccount 用户账号
+     * @param userAccount  用户账号
      * @param userPassword 用户密码
-     * @param request HTTP请求对象，用于获取登录IP等信息
+     * @param request      HTTP请求对象，用于获取登录IP等信息
      * @return 登录成功返回用户信息及token等组成的响应对象，失败返回null
      */
     UserInfoResponse userLogin(String userAccount, String userPassword, HttpServletRequest request);

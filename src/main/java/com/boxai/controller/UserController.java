@@ -154,18 +154,33 @@ public class UserController {
     }
 
     // 更新用户信息
-    @PostMapping("/update/info")
-    public BaseResponse<Integer> upUserInfo(@RequestBody UserUpInfoRequest userUpInfoRequest, HttpServletRequest request) {
+    @PostMapping("/update/name")
+    public BaseResponse<Integer> upUserName(@RequestBody UserUpInfoRequest userUpInfoRequest, HttpServletRequest request) {
         User user = userService.getLoginUser(request); // 获取用户信息
         if (user.getId() == null){
             throw new BusinessException(PARAMS_ERROR);
         }
         // 校验请求对象是否为null或id是否合法
-        if (userUpInfoRequest.getUserName() == null || userUpInfoRequest.getUserProfile() == null) {
+        if (userUpInfoRequest.getUserName() == null ) {
             throw new BusinessException(PARAMS_ERROR);
         }
         // 调用服务层方法，更新用户信息
-        int result = userMapper.updateUserInfo(userUpInfoRequest.getUserName(), userUpInfoRequest.getUserProfile(), user.getId());
+        int result = userMapper.updateUserName(userUpInfoRequest.getUserName(), user.getId());
+        // 返回更新结果
+        return ResultResponse.success(result);
+    }
+    @PostMapping("/update/profile")
+    public BaseResponse<Integer> upUserProfile(@RequestBody UserUpInfoRequest userUpInfoRequest, HttpServletRequest request) {
+        User user = userService.getLoginUser(request); // 获取用户信息
+        if (user.getId() == null){
+            throw new BusinessException(PARAMS_ERROR);
+        }
+        // 校验请求对象是否为null或id是否合法
+        if (userUpInfoRequest.getUserProfile() == null) {
+            throw new BusinessException(PARAMS_ERROR);
+        }
+        // 调用服务层方法，更新用户信息
+        int result = userMapper.updateUserProfile(userUpInfoRequest.getUserProfile(), user.getId());
         // 返回更新结果
         return ResultResponse.success(result);
     }

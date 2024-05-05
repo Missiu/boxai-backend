@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.Map;
 
 @SpringBootTest
 class MoonlightAPITest {
@@ -22,6 +22,9 @@ class MoonlightAPITest {
     }
     @Test
     void fetchBalance(){
-        System.out.println(moonlightAPI.fetchBalance());
+        Map<String, Double> x = moonlightAPI.fetchBalance();
+        System.out.println(x.get("available_balance"));
+        System.out.println(x.get("voucher_balance"));
+        System.out.println(x.get("cash_balance"));
     }
 }

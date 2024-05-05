@@ -155,9 +155,9 @@ public double token(String systemTxt, String userTxt) {
      */
     private Map<String, Object> createChatRequestBody(String systemTxt, String userTxt) {
         Map<String, Object> model = new HashMap<>();
-//        model.put("model", "moonshot-v1-32k"); // 指定使用的模型
-        model.put("model", "moonshot-v1-128k"); // 指定使用的模型
-        model.put("temperature", 0.2f); // 控制生成结果的随机性
+        model.put("model", "moonshot-v1-32k"); // 指定使用的模型
+//        model.put("model", "moonshot-v1-128k"); // 指定使用的模型
+        model.put("temperature", 0f); // 控制生成结果的随机性
 
         // 创建系统消息和用户消息
         Map<String, Object> systemMessage = new HashMap<>();

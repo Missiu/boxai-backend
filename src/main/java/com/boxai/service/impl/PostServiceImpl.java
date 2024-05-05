@@ -4,26 +4,20 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.boxai.common.constant.CommonConstant;
-import com.boxai.common.enums.ErrorCode;
-import com.boxai.exception.BusinessException;
 import com.boxai.mapper.PostMapper;
 import com.boxai.model.domain.Post;
-import com.boxai.model.domain.PostThumb;
 import com.boxai.model.domain.Result;
 import com.boxai.model.domain.User;
 import com.boxai.model.dto.post.PostQueryRequest;
 import com.boxai.model.vo.PostVO;
 import com.boxai.service.PostService;
-import com.boxai.service.PostThumbService;
 import com.boxai.service.ResultService;
 import com.boxai.service.UserService;
 import com.boxai.utils.SqlUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -58,6 +52,7 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post>
         Long userId = postQueryRequest.getUserId();
         String sortField = postQueryRequest.getSortField();
         String sortOrder = postQueryRequest.getSortOrder();
+        Long resultId = postQueryRequest.getResultId();
         // 1. 关联查询用户信息
 
         // 拼接查询条件
@@ -67,6 +62,12 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post>
         queryWrapper.like(StringUtils.isNotBlank(title), "title", title);
         queryWrapper.like(StringUtils.isNotBlank(content), "content", content);
         queryWrapper.eq("isDelete", false);
+        if (userId != null && userId > 0){
+            queryWrapper.eq("userId", userId);
+        }
+        if (resultId != null && resultId > 0){
+            queryWrapper.eq("resultId", resultId);
+        }
         queryWrapper.orderBy(SqlUtils.validSortField(sortField), sortOrder.equals(CommonConstant.SORT_ORDER_ASC),
                 sortField);
         return queryWrapper;
@@ -85,32 +86,36 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post>
         // 将postList列表中每个Post对象的userId字段提取出来
         Set<Long> userIdSet = postList.stream().map(Post::getUserId).collect(Collectors.toSet());
         // 根据用户ID将用户列表分组
+        // 根据resultIdSet查询所有的Result实体
         Map<Long, List<User>> userIdUserListMap = userService.listByIds(userIdSet).stream()
                 .collect(Collectors.groupingBy(User::getId));
 
         // 将postList列表中每个Post对象的resultId字段提取出来
         Set<Long> resultIdSet = postList.stream().map(Post::getResultId).collect(Collectors.toSet());
-        // 根据resultId将结果列表分组
+        // 根据resultId,查询result数据，把数据和resultIdSet里的resultId进行匹配对应，形成一个map集合
         Map<Long, List<Result>> resultIdResultListMap = resultService.listByIds(resultIdSet).stream()
                 .collect(Collectors.groupingBy(Result::getId));
-
 
         List<PostVO> postVOList = postList.stream().map(post -> {
             PostVO postVO = new PostVO();
             BeanUtils.copyProperties(post, postVO);
             // 假设从userIdUserListMap中获取用户信息设置到PostVO
             List<User> users = userIdUserListMap.get(post.getUserId());
-            if (!users.isEmpty()) {
+            if (users != null && !users.isEmpty()) {
                 User user = users.get(0); // 假设一个userId对应唯一用户，直接取第一个
                 postVO.setUserAvatar(user.getUserAvatar());
                 postVO.setUserName(user.getUserName());
             }
+
+            // 修改前：List<Result> results = resultIdResultListMap.get(post.getResultId());
+            // 修改后：添加空值检查
             List<Result> results = resultIdResultListMap.get(post.getResultId());
-            if (!results.isEmpty()) {
-                Result result = results.get(0); // 假设一个userId对应唯一用户，直接取第一个
+            if (results != null && !results.isEmpty()) {
+                Result result = results.get(0); // 假设一个resultId对应唯一结果，直接取第一个
                 postVO.setGenName(result.getGenName());
                 postVO.setCodeProfile(result.getCodeProfile());
             }
+
             return postVO;
         }).collect(Collectors.toList());
         postVOPage.setRecords(postVOList);

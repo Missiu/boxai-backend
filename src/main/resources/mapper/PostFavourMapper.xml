@@ -21,6 +21,6 @@
         select p.*
         from post p
                  join (select resultId from post_favour where userId = #{favourUserId}) pf
-                      on p.id = pf.resultId ${ew.customSqlSegment}
+                      on p.resultId = pf.resultId ${ew.customSqlSegment}
     </select>
 </mapper>

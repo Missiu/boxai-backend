@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS user (
     id           BIGINT AUTO_INCREMENT COMMENT 'id' PRIMARY KEY,
     userAccount  VARCHAR(256) UNIQUE NOT NULL COMMENT '账号',
     userPassword VARCHAR(256) NOT NULL COMMENT '密码',
-    userName     VARCHAR(256)              NOT  NULL     COMMENT '用户昵称',
+    userName     VARCHAR(256)   default 'boxai_user'                                                                         NOT  NULL     COMMENT '用户昵称',
     userAvatar   VARCHAR(1024) DEFAULT 'https://photokit.com/features/images/image-text-after.webp'                        NULL     COMMENT '用户头像',
     userProfile  VARCHAR(1024)                          NULL     COMMENT '用户简介',
     availableBalance  DECIMAL(20, 2)                          NULL     COMMENT '可用余额',

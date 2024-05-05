@@ -13,6 +13,8 @@ import java.io.Serializable;
 @Data
 public class PostQueryRequest extends PageRequest implements Serializable {
 
+
+
     /**
      * 搜索词
      */
@@ -32,6 +34,11 @@ public class PostQueryRequest extends PageRequest implements Serializable {
      * 创建用户 id
      */
     private Long userId;
+
+    /**
+     * 创建用户 id
+     */
+    private Long resultId;
 
     private static final long serialVersionUID = 1L;
 }
