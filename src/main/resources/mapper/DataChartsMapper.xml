@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.boxai.mapper.DataChartsMapper">
+
+    <resultMap id="BaseResultMap" type="com.boxai.model.entity.DataCharts">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="goalDescription" column="goal_description" jdbcType="VARCHAR"/>
+            <result property="generationName" column="generation_name" jdbcType="VARCHAR"/>
+            <result property="aiTokenUsage" column="ai_token_usage" jdbcType="INTEGER"/>
+            <result property="userId" column="user_id" jdbcType="BIGINT"/>
+            <result property="codeComments" column="code_comments" jdbcType="VARCHAR"/>
+            <result property="rawData" column="raw_data" jdbcType="VARCHAR"/>
+            <result property="codeProfileDescription" column="code_profile_description" jdbcType="VARCHAR"/>
+            <result property="codeEntities" column="code_entities" jdbcType="VARCHAR"/>
+            <result property="codeApis" column="code_apis" jdbcType="VARCHAR"/>
+            <result property="codeExecution" column="code_execution" jdbcType="VARCHAR"/>
+            <result property="codeSuggestions" column="code_suggestions" jdbcType="VARCHAR"/>
+            <result property="codeNormRadar" column="code_norm_radar" jdbcType="VARCHAR"/>
+            <result property="codeNormRadarDescription" column="code_norm_radar_description" jdbcType="VARCHAR"/>
+            <result property="codeTechnologyPie" column="code_technology_pie" jdbcType="VARCHAR"/>
+            <result property="codeCatalogPath" column="code_catalog_path" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="isDelete" column="is_delete" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,goal_description,generation_name,
+        ai_token_usage,user_id,code_comments,
+        raw_data,code_profile_description,code_entities,
+        code_apis,code_execution,code_suggestions,
+        code_norm_radar,code_norm_radar_description,code_technology_pie,
+        code_catalog_path,create_time,update_time,
+        is_delete
+    </sql>
+    <!--    更新goalDescription -->
+    <update id="updateGoalDescription">
+        update data_charts
+        set goal_description = #{goalDescription,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=VARCHAR} and is_delete = 0
+    </update>
+    <!--    更新generationName -->
+    <update id="updateGenerationName">
+        update data_charts
+        set generation_name = #{generationName,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=VARCHAR} and is_delete = 0
+    </update>
+    <!--    更新codeComments -->
+    <update id="updateCodeComments">
+        update data_charts
+        set code_comments = #{codeComments,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=VARCHAR} and is_delete = 0
+    </update>
+    <!--    更新codeProfileDescription -->
+    <update id="updateCodeProfileDescription">
+        update data_charts
+        set code_profile_description = #{codeProfileDescription,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=VARCHAR} and is_delete = 0
+    </update>
+    <!--    更新codeEntities -->
+    <update id="updateCodeEntities">
+        update data_charts
+        set code_entities = #{codeEntities,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=VARCHAR} and is_delete = 0
+    </update>
+    <!--    更新codeApis -->
+    <update id="updateCodeApis">
+        update data_charts
+        set code_apis = #{codeApis,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=VARCHAR} and is_delete = 0
+    </update>
+    <!--    更新codeExecution -->
+    <update id="updateCodeExecution">
+        update data_charts
+        set code_execution = #{codeExecution,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=VARCHAR} and is_delete = 0
+    </update>
+    <!--    更新codeSuggestions -->
+    <update id="updateCodeSuggestions">
+        update data_charts
+        set code_suggestions = #{codeSuggestions,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=VARCHAR} and is_delete = 0
+    </update>
+    <!--    更新codeNormRadar -->
+    <update id="updateCodeNormRadar">
+        update data_charts
+        set code_norm_radar = #{codeNormRadar,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=VARCHAR} and is_delete = 0
+    </update>
+    <!--    更新codeNormRadarDescription -->
+    <update id="updateCodeNormRadarDescription">
+        update data_charts
+        set code_norm_radar_description = #{codeNormRadarDescription,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=VARCHAR} and is_delete = 0
+    </update>
+    <!--    更新codeTechnologyPie -->
+    <update id="updateCodeTechnologyPie">
+        update data_charts
+        set code_technology_pie = #{codeTechnologyPie,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=VARCHAR} and is_delete = 0
+    </update>
+    <!--    更新codeCatalogPath -->
+    <update id="updateCodeCatalogPath">
+        update data_charts
+        set code_catalog_path = #{codeCatalogPath,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=VARCHAR} and is_delete = 0
+    </update>
+<!--    设置删除为1-->
+    <update id="deleteChartById">
+        update data_charts
+        set is_delete = 1
+        where id = #{id,jdbcType=VARCHAR} and is_delete = 0
+    </update>
+<!--    更新当前时间-->
+    <update id="updateCurrentTime">
+        update data_charts
+        set update_time = now()
+        where id = #{id,jdbcType=VARCHAR} and is_delete = 0
+    </update>
+
+</mapper>

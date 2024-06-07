@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.boxai.mapper.PostsMapper">
+
+    <resultMap id="BaseResultMap" type="com.boxai.model.entity.Posts">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="likesCount" column="likes_count" jdbcType="INTEGER"/>
+        <result property="favoritesCount" column="favorites_count" jdbcType="INTEGER"/>
+        <result property="content" column="content" jdbcType="VARCHAR"/>
+        <result property="userId" column="user_id" jdbcType="BIGINT"/>
+        <result property="postId" column="post_id" jdbcType="BIGINT"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="isDelete" column="is_delete" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,likes_count,favorites_count,
+        content,user_id,post_id,
+        create_time,update_time,is_delete
+    </sql>
+    <!--    删除数据-->
+    <update id="deletePostById">
+        UPDATE posts
+        SET is_delete = 1
+        WHERE id = #{id}
+    </update>
+
+    <!--    更新当前时间-->
+    <update id="updateCurrentTime">
+        UPDATE posts
+        SET update_time = now()
+        WHERE id = #{id}
+    </update>
+<!--   取消收藏-->
+    <update id="updateCancelFavorites">
+        UPDATE posts
+        SET favorites_count = favorites_count - 1
+        WHERE post_id = #{postId}
+    </update>
+    <update id="updateFavorites">
+        UPDATE posts
+        SET favorites_count = favorites_count + 1
+        WHERE post_id = #{postId}
+    </update>
+<!--    取消点赞-->
+     <update id="updateCancelLikes">
+        UPDATE posts
+        SET likes_count = likes_count - 1
+        WHERE post_id = #{postId}
+    </update>
+    <update id="updateLikes">
+        UPDATE posts
+        SET likes_count = likes_count + 1
+        WHERE post_id = #{postId}
+    </update>
+<!--    返回帖子信息-->
+    <select id="selectPostById" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM posts
+        WHERE post_id = #{postId}
+    </select>
+</mapper>

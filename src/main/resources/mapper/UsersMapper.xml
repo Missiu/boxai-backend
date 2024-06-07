@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.boxai.mapper.UsersMapper">
+
+    <resultMap id="BaseResultMap" type="com.boxai.model.entity.Users">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="account" column="account" jdbcType="VARCHAR"/>
+        <result property="passwordHash" column="password_hash" jdbcType="CHAR"/>
+        <result property="nickname" column="nickname" jdbcType="VARCHAR"/>
+        <result property="avatarUrl" column="avatar_url" jdbcType="VARCHAR"/>
+        <result property="profile" column="profile" jdbcType="VARCHAR"/>
+        <result property="availableBalance" column="available_balance" jdbcType="DECIMAL"/>
+        <result property="voucherBalance" column="voucher_balance" jdbcType="DECIMAL"/>
+        <result property="cashBalance" column="cash_balance" jdbcType="DECIMAL"/>
+        <result property="role" column="role" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="isDelete" column="is_delete" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,account,password_hash,
+        nickname,avatar_url,profile,
+        available_balance,voucher_balance,cash_balance,
+        role,create_time,update_time,
+        is_delete
+    </sql>
+    <!--    通过account查询用户信息-->
+    <select id="selectByAccount" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from users
+        where account = #{account,jdbcType=VARCHAR} and is_delete = 0
+    </select>
+    <!--    通过account查询是否存在相同账号-->
+    <select id="selectByAccountExist" resultType="java.lang.Integer">
+        select count(1)
+        from users
+        where account = #{account,jdbcType=VARCHAR}
+          and is_delete = 0
+    </select>
+    <!--    更新密码-->
+    <update id="updateUserPassword">
+        update users
+        set password_hash = #{passwordHash}
+        where id = #{id,jdbcType=VARCHAR}
+          and is_delete = 0
+    </update>
+    <!--    更新用户昵称-->
+    <update id="updateUserNickname">
+        update users
+        set nickname = #{nickname,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=VARCHAR}
+          and is_delete = 0
+    </update>
+    <!--    更新用户简介-->
+    <update id="updateUserProfile">
+        update users
+        set profile = #{profile,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=VARCHAR}
+          and is_delete = 0
+    </update>
+    <!--    更新账户-->
+    <update id="updateUserAccount">
+        update users
+        set account = #{account,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=VARCHAR}
+          and is_delete = 0
+    </update>
+    <!--    减少代金券数量，减少可用值-->
+    <update id="updateUserVoucher">
+        update users
+        set voucher_balance   = voucher_balance - 1,
+            available_balance = available_balance - 1
+        where id = #{id,jdbcType=VARCHAR}
+          and is_delete = 0
+    </update>
+    <!--    逻辑删除用户信息-->
+    <update id="deleteUserById">
+        update users
+        set is_delete = 1
+        where id = #{id,jdbcType=VARCHAR}
+          and is_delete = 0
+    </update>
+    <!--    根据id更新当前时间-->
+    <update id="updateCurrentTime">
+        update users
+        set update_time = now()
+        where id = #{id,jdbcType=VARCHAR}
+          and is_delete = 0
+    </update>
+<!--    更新role-->
+    <update id="updateUserRole">
+        update users
+        set role = #{role,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=VARCHAR}
+          and is_delete = 0
+    </update>
+</mapper>

@@ -1,0 +1,223 @@
+# 服务概况 ---- 可自定义
+server:
+  # 项目端口
+  port: 8101
+  servlet:
+    # 项目基础URI
+    context-path: /api
+  # 选择Undertow服务器配置
+  undertow:
+    # HTTP post内容的最大大小。当值为-1时，默认值为大小是无限的
+    max-http-post-size: -1
+    # Undertow的URI编码
+    url-charset: UTF-8
+    # 以下的配置会影响buffer,这些buffer会用于服务器连接的IO操作,有点类似netty的池化内存管理
+    # 每块buffer的空间大小,越小的空间被利用越充分
+    buffer-size: 512
+    # 是否分配的直接内存
+    direct-buffers: true
+    threads:
+      # 设置IO线程数, 它主要执行非阻塞的任务,它们会负责多个连接, 默认设置每个CPU核心一个线程
+      io: 16
+      # 阻塞任务线程池, 当执行类似servlet请求阻塞操作, Undertow会从这个线程池中取得线程,它的值设置取决于系统的负载
+      worker: 256
+#  # 选择Tomcat服务器配置
+#  tomcat:
+#    # Tomcat的URI编码
+#    uri-encoding: UTF-8
+#    # 连接数满后的排队数，默认为100
+#    accept-count: 1000
+#    threads:
+#      # Tomcat最大线程数，默认为200
+#      max: 800
+#      # Tomcat启动初始化的线程数，默认值10
+#      min-spare: 100
+
+# Knife4j的增强配置，不需要增强可以不配
+knife4j:
+  # 是否打开Knife4j的增强配置
+  enable: true
+
+  setting:
+    language: zh-CN
+# SpringDoc-OpenAPI项目配置
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+    version: openapi_3_1
+  swagger-ui:
+    path: /swagger-ui.html
+  group-configs:
+    - group: "box-ai"
+      paths-to-match: "/**"
+      packages-to-scan:
+        - com.boxai.controller
+
+# 公共配置文件
+spring:
+  # 项目前置工作
+  application:
+    # 定义项目名称
+    name: box-ai
+  # 文件上传
+  servlet:
+    multipart:
+      # 单个文件大小
+      max-file-size: 10MB
+      # 设置总上传的文件大小
+      max-request-size: 20MB
+  # 设置Spring MVC路径匹配策略，ant_path_matcher格式：/api/**/subApi/{param}
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  config:
+    import: classpath:prompt/prompt.yml
+
+
+  # MySQL配置
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://8.217.37.89:3306/boxai
+    username: root
+    password: huzhihao
+    type: com.alibaba.druid.pool.DruidDataSource
+    # DruidCP连接池配置
+    druid:
+      # 初始连接数 ---- 可自定义
+      initial-size: 5
+      # 连接池最小连接数量
+      min-idle: 10
+      # 连接池最大连接数量
+      max-active: 25
+      # 配置获取连接等待超时的时间，单位是毫秒
+      max-wait: 60000
+      # 配置连接超时时间
+      connect-timeout: 30000
+      # 此属性控制从池返回的连接的默认自动提交行为，默认值：true
+      default-auto-commit: true
+      # 配置网络超时时间
+      socket-timeout: 60000
+      # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒，设置10分钟
+      time-between-eviction-runs-millis: 30000
+      # 配置一个连接在池中最小生存的时间，单位是毫秒，设置10分钟
+      min-evictable-idle-time-millis: 600000
+      # 配置一个连接在池中最大生存的时间，单位是毫秒，设置30分钟
+      max-evictable-idle-time-millis: 1800000
+      # 配置检测连接是否有效
+      validation-query: SELECT 2 FROM DUAL
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      web-stat-filter:
+        enabled: true
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  data:
+    # 系统缓存Redis配置
+    redis:
+      # 单机地址（单价模式配置和集群模式配置只能存在一个）
+      host: 8.217.37.89
+      # 单机端口，默认为6379
+      port: 6379
+      # 集群地址（单价模式配置和集群模式配置只能存在一个）
+      #cluster:
+      #  nodes:
+      #    - 127.0.0.1:6379
+      #    - 127.0.0.1:6380
+      #    - 127.0.0.1:6381
+      #    - 127.0.0.1:6382
+      #    - 127.0.0.1:6383
+      #    - 127.0.0.1:6384
+      # 数据库索引
+      database: 0
+      # 密码（考虑是否需要密码）
+      password: huzhihao
+      # 连接超时时间
+      timeout: 3s
+      # redis连接池
+      lettuce:
+        pool:
+          # 最小空闲连接数
+          min-idle: 0
+          # 最大空闲连接数
+          max-idle: 50
+          # 最大活动连接数
+          max-active: 25
+          # 最大等待时间/ms
+          max-wait: 60000
+# Redisson配置
+# 如果同时开启单机版本和集群版本，只有单机版本生效
+redisson:
+  # 线程池数量
+  threads: 4
+  # Netty线程池数量
+  netty-threads: 8
+  # 限流单位时间，单位：分钟
+  limit-rate-interval: 1
+  # 限流单位时间内访问次数，也能看做单位时间内系统分发的令牌数
+  limit-rate: 20
+  # 每个操作所要消耗的令牌数，系统分发的令牌数一定要大于等于操作消耗的令牌树，不然会报错
+  limit-permits: 1
+  # Redis单机版本
+  single-server-config:
+    # todo 是否启动单机Redis（Redisson）缓存
+    enable-single: true
+    # 单机地址（一定要在redis协议下）
+    address: redis://8.217.37.89:6379
+    # 数据库索引
+    database: 1
+    # 密码（考虑是否需要密码）
+    password: huzhihao
+    # 命令等待超时，单位：毫秒
+    timeout: 3000
+    # 发布和订阅连接池大小
+    subscription-connection-pool-size: 25
+    # 最小空闲连接数
+    connection-minimum-idle-size: 8
+    # 连接池大小
+    connection-pool-size: 32
+    # 连接空闲超时，单位：毫秒
+    idle-connection-timeout: 60000
+
+
+# MyBatisPlus配置
+# https://baomidou.com/config/
+mybatis-plus:
+  # 启动时是否检查 MyBatis XML 文件的存在，默认不检查
+  check-config-location: false
+  # 对应的 XML 文件位置
+  mapper-locations: classpath:mapper/*Mapper.xml
+  # 实体扫描，多个package用逗号或者分号分隔
+  type-aliases-package: com.boxai.model.entity
+  configuration:
+    # 自动驼峰命名规则（camel case）映射
+    map-underscore-to-camel-case: true
+    # MyBatis 自动映射策略
+    # NONE 不启用；PARTIAL 只对非嵌套；resultMap 自动映射；FULL 对所有；resultMap 自动映射；
+    auto-mapping-behavior: PARTIAL
+    # MyBatis 自动映射时未知列或未知属性处理策
+    # NONE 不做处理； WARNING 打印相关警告；FAILING 抛出异常和详细信息；
+    auto-mapping-unknown-column-behavior: NONE
+    # 更详细的日志输出 会有性能损耗 org.apache.ibatis.logging.stdout.StdOutImpl
+    # 关闭日志记录 (可单纯使用 p6spy 分析) org.apache.ibatis.logging.nologging.NoLoggingImpl
+    # 默认日志输出 org.apache.ibatis.logging.slf4j.Slf4jImpl
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+  global-config:
+    # 是否打印 Logo banner
+    banner: true
+    db-config:
+      # 主键类型
+      # AUTO 自增；NONE 空；INPUT 用户输入；ASSIGN_ID 雪花算法；ASSIGN_UUID 排除中划线的UUID；UUID 普通的UUID；
+      #      id-type: ASSIGN_ID
+      # 逻辑删除的字段
+      logic-delete-field: isDeleted
+      # 逻辑已删除值
+      logic-delete-value: 1
+      # 逻辑未删除值
+      logic-not-delete-value: 0
+      insert-strategy: not_null
+      update-strategy: not_null
+      where-strategy: not_null
