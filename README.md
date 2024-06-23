@@ -66,6 +66,7 @@ GitHub作为全球最大的开源社区，拥有众多优秀的开源项目，20
 1. 先配置自己的maven仓库，用自己的maven
 2. 链接数据库，运行sql下面的sql代码
 3. 配置redis链接
-4. 运行项目
-5. 在 <http://localhost:8101/api/doc.html> 查看后端接口文档
+4. 切换为开发环境
+5. 运行项目
+6. 在 <http://localhost:8101/api/doc.html> 查看后端接口文档
 
