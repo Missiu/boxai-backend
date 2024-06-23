@@ -65,13 +65,7 @@ GitHub作为全球最大的开源社区，拥有众多优秀的开源项目，20
 
 1. 先配置自己的maven仓库，用自己的maven
 2. 链接数据库，运行sql下面的sql代码
-3. 运行项目
-4. 在 <http://localhost:8101/api/doc.html> 查看后端接口文档
+3. 配置redis链接
+4. 运行项目
+5. 在 <http://localhost:8101/api/doc.html> 查看后端接口文档
 
-## 前端
-
-1. 环境node.js，我的版本是18.18.0
-2. 建议使用yarn包管理器 npm install -g yarn ，可以使用yarn -v 看是不是安装成功
-3. 打开项目，安装依赖在命令终端输入，yarn
-4. 依赖安装完成 打开package.josn 文件，点击start:dev 旁边的运行
-5. 在 <http://localhost:8000> 查看前端
