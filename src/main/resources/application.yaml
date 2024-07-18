@@ -1,6 +1,6 @@
 spring:
   profiles:
-#    active: dev
-    active: prod
+    active: dev
+#    active: prod
   application:
     name: box-ai #当前服务的名称

@@ -77,13 +77,15 @@ public class DataChartsServiceImpl extends ServiceImpl<DataChartsMapper, DataCha
     /**
      * 用于配置线程，让ai生成异步化
      */
-    @Resource
+    @Resource(name = "threadPoolExecutor")
     private ThreadPoolExecutor threadPoolExecutor;
+
     /**
      * 用于获取当前上下文
      */
     @Resource
     private SpringContextHolder springContextHolder;
+
 
     @Autowired
     private SaveDataService saveDataService;
@@ -165,6 +167,7 @@ public class DataChartsServiceImpl extends ServiceImpl<DataChartsMapper, DataCha
         }else {
             universalDataChartsVO.setGenerationName(chartCreatTextDTO.getGenerationName());
         }
+
         // 先保存到数据库获取id等信息、更新缓存，设置状态为排队中
         UniversalDataChartsVO updateStatusRedisCache = saveDataService.updateStatusRedisCache(saveDataService.saveData(universalDataChartsVO), String.valueOf(AIGCEnum.QUEUEING));
         try{
@@ -177,7 +180,7 @@ public class DataChartsServiceImpl extends ServiceImpl<DataChartsMapper, DataCha
                 UniversalDataChartsVO dataChartsVO1 = saveDataService.saveData(dataChartsVO);
                 // 传入数据 更新缓存，设置状态为完成
                 return saveDataService.updateStatusRedisCache(dataChartsVO1, String.valueOf(AIGCEnum.COMPLETED));
-            });
+            },threadPoolExecutor);
         }catch (Exception e){
             saveDataService.updateStatusRedisCache(updateStatusRedisCache, String.valueOf(AIGCEnum.FAILED));
         }
@@ -418,7 +421,7 @@ public class DataChartsServiceImpl extends ServiceImpl<DataChartsMapper, DataCha
                     UniversalDataChartsVO dataChartsVO1 = saveDataService.saveData(dataChartsVO);
                     // 传入数据 更新缓存，设置状态为完成
                     return saveDataService.updateStatusRedisCache(dataChartsVO1, String.valueOf(AIGCEnum.COMPLETED));
-                });
+                },threadPoolExecutor);
             }catch (Exception e){
                 saveDataService.updateStatusRedisCache(updateStatusRedisCache, String.valueOf(AIGCEnum.FAILED));
             }

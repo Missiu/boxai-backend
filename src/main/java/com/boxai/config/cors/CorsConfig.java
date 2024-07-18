@@ -22,7 +22,7 @@ public class CorsConfig implements WebMvcConfigurer  {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**") // 对所有路径进行 CORS 配置
-                .allowedOrigins("http://www.cheesevps.top:8000") // 允许特定的域名和端口
+                .allowedOrigins("http://localhost:8000") // 允许特定的域名和端口
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // 允许的方法
                 .allowCredentials(true) // 允许发送 Cookie
                 .maxAge(3600); // 设置缓存时间为1小时

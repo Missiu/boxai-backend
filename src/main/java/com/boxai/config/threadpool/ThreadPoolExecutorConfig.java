@@ -28,9 +28,10 @@ public class ThreadPoolExecutorConfig {
                 // 为线程设置名称，基于count值动态生成，确保每个线程名称唯一
                 thread.setName("genChartThread: "+ count);
 
+
                 // 递增计数器，以便为下一个线程生成唯一的名称
                 count++;
-
+                log.info("############ {} ThreadPoolExecutorConfig.newThread()", thread.getName());
                 // 返回新创建的线程实例
                 return thread;
             }
