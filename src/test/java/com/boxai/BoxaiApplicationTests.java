@@ -15,15 +15,4 @@ import static com.boxai.utils.dataclean.DataClean.extractFlagsContent;
 @SpringBootTest
 class BoxaiApplicationTests {
 
-    @Autowired
-    private DataChartsMapper dataChartsMapper;
-    @Test
-    void contextLoads() {
-        for (int i = 20; i < 30; i++){
-            DataCharts dataCharts = new DataCharts();
-            dataCharts.setUserId(RandomUtil.randomLong(1L,3L));
-            dataCharts.setId(Long.valueOf(i));
-            dataChartsMapper.insert(dataCharts);
-        }
-    }
 }

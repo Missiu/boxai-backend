@@ -48,7 +48,7 @@ public class TokenHandlerConfig implements WebMvcConfigurer {
             // 配置拦截器路径和排除路径
             registry.addInterceptor(interceptorHandler)
                     .addPathPatterns("/**")
-                    .excludePathPatterns("/swagger-resources/**","/swagger-ui/**", "/v3/**", "/error","/","/doc.html/**","/doc/**","/webjars/**")
+                    .excludePathPatterns("/swagger-resources/**","/swagger-ui/**", "/v3/**", "/error","/","/doc.html/**","/doc/**","/webjars/**","/v2/**","/swagger-ui.html")
                     .excludePathPatterns("/user/login", "/user/register");
 
             log.info("TokenInterceptorHandler registered successfully.");
