@@ -3,7 +3,7 @@ mode:
 
 dataSources:
   ds_0:
-    dataSourceClassName: com.alibaba.druid.pool.DruidDataSource
+    dataSourceClassName: com.zaxxer.hikari.HikariDataSource
     driverClassName: com.mysql.cj.jdbc.Driver
     jdbcUrl: jdbc:mysql://127.0.0.1:3306/boxai
     username: root
