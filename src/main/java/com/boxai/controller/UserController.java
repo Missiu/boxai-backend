@@ -7,9 +7,11 @@ import com.boxai.model.dto.user.*;
 import com.boxai.model.page.PageModel;
 import com.boxai.model.vo.user.UserInfoVO;
 import com.boxai.service.UsersService;
-import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
+
 import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/user")

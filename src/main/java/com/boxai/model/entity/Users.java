@@ -8,9 +8,10 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 import lombok.Data;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
 /**
  * 用户信息表

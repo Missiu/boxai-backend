@@ -11,8 +11,7 @@ import com.boxai.model.vo.postfavorite.PostFavorListQueryVO;
 import com.boxai.service.PostLikesService;
 import com.boxai.service.UsersService;
 import com.boxai.utils.threadlocal.UserHolder;
-import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/like")
 public class LikeController {
-    @Resource
+
+    @Autowired
     private PostLikesService postLikesService;
 
     @PostMapping("/add")

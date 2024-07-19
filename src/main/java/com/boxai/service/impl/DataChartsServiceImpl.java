@@ -28,13 +28,14 @@ import com.boxai.utils.chat.MoonshotAiPrompt;
 import com.boxai.utils.dataclean.DataClean;
 import com.boxai.utils.rateLimit.RateLimitUtils;
 import com.boxai.utils.threadlocal.UserHolder;
-import jakarta.annotation.Resource;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

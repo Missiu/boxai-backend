@@ -9,9 +9,10 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 import lombok.Data;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
 /**
  * 数据信息表

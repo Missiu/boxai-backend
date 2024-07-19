@@ -7,14 +7,14 @@ import com.boxai.model.dto.post.PostQueryDTO;
 import com.boxai.model.page.PageModel;
 import com.boxai.model.vo.post.PostListQueryVO;
 import com.boxai.service.PostsService;
-import com.boxai.service.impl.PostsServiceImpl;
-import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.stereotype.Controller;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/post")

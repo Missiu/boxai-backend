@@ -14,11 +14,12 @@ import com.boxai.service.DataChartsService;
 import com.boxai.service.PostLikesService;
 import com.boxai.mapper.PostLikesMapper;
 import com.boxai.utils.threadlocal.UserHolder;
-import jakarta.annotation.Resource;
+
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.util.concurrent.TimeUnit;
 
 import static com.boxai.common.constants.RedisKeyConstant.POST_FAVORITES_COUNT_TTL;

@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS users
     available_balance DECIMAL(10, 2) DEFAULT 0.00                                                         NULL COMMENT '可用余额',
     voucher_balance   DECIMAL(10, 2) DEFAULT 0.00                                                         NULL COMMENT '代金券余额',
     cash_balance      DECIMAL(10, 2) DEFAULT 0.00                                                         NULL COMMENT '现金余额',
-    role              VARCHAR(255)    DEFAULT 'user'                                                       NOT NULL COMMENT '用户角色/user/vip/自定义key',
+    role              VARCHAR(255)   DEFAULT 'user'                                                       NOT NULL COMMENT '用户角色/user/vip/自定义key',
     create_time       DATETIME       DEFAULT CURRENT_TIMESTAMP                                            NOT NULL COMMENT '创建时间',
     update_time       DATETIME       DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP                NOT NULL COMMENT '更新时间',
     is_delete         TINYINT(1)     DEFAULT FALSE                                                        NOT NULL COMMENT '是否删除',
@@ -58,8 +58,8 @@ CREATE TABLE IF NOT EXISTS data_charts
     generation_name             VARCHAR(100)                                                       NULL COMMENT '生成名称',
     ai_token_usage              INT UNSIGNED DEFAULT 0                                             NULL COMMENT 'AI使用量',
     user_id                     BIGINT                                                             NOT NULL COMMENT '用户ID',
+    raw_data                    TEXT                                                               NULL COMMENT '原始数据',
     code_comments               TEXT                                                               NULL COMMENT '代码注释',
-    raw_data                    MEDIUMTEXT                                                         NULL COMMENT '原始数据',
     code_profile_description    TEXT                                                               NULL COMMENT '代码简介',
     code_entities               TEXT                                                               NULL COMMENT '代码实体',
     code_apis                   TEXT                                                               NULL COMMENT '代码API',
@@ -77,6 +77,58 @@ CREATE TABLE IF NOT EXISTS data_charts
     INDEX idx_data_charts_user_id (user_id)
 ) COMMENT '数据信息表' COLLATE = utf8mb4_unicode_ci;
 
+-- 数据表 data_charts
+CREATE TABLE IF NOT EXISTS data_charts_0
+(
+    id                          BIGINT AUTO_INCREMENT COMMENT '结果ID' PRIMARY KEY,
+    goal_description            VARCHAR(255)                                                       NULL COMMENT '目标描述',
+    generation_name             VARCHAR(100)                                                       NULL COMMENT '生成名称',
+    ai_token_usage              INT UNSIGNED DEFAULT 0                                             NULL COMMENT 'AI使用量',
+    user_id                     BIGINT                                                             NOT NULL COMMENT '用户ID',
+    raw_data                    TEXT                                                               NULL COMMENT '原始数据',
+    code_comments               TEXT                                                               NULL COMMENT '代码注释',
+    code_profile_description    TEXT                                                               NULL COMMENT '代码简介',
+    code_entities               TEXT                                                               NULL COMMENT '代码实体',
+    code_apis                   TEXT                                                               NULL COMMENT '代码API',
+    code_execution              TEXT                                                               NULL COMMENT '代码执行',
+    code_suggestions            TEXT                                                               NULL COMMENT '代码建议',
+    code_norm_radar             TEXT                                                               NULL COMMENT '代码规范-雷达图',
+    code_norm_radar_description TEXT                                                               NULL COMMENT '代码规范-雷达图说明',
+    code_technology_pie         TEXT                                                               NULL COMMENT '代码技术-饼状图',
+    code_catalog_path           TEXT                                                               NULL COMMENT '代码目录-树状图',
+    create_time                 DATETIME     DEFAULT CURRENT_TIMESTAMP                             NOT NULL COMMENT '创建时间',
+    update_time                 DATETIME     DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL COMMENT '更新时间',
+    is_delete                   TINYINT(1)   DEFAULT FALSE                                         NOT NULL COMMENT '是否逻辑删除',
+    CONSTRAINT fk_data_charts_0_user_id FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+    INDEX idx_data_charts_0_id_is_delete (id, is_delete),
+    INDEX idx_data_charts_0_user_id (user_id)
+) COMMENT '数据信息表' COLLATE = utf8mb4_unicode_ci;
+-- 数据表 data_charts
+CREATE TABLE IF NOT EXISTS data_charts_1
+(
+    id                          BIGINT AUTO_INCREMENT COMMENT '结果ID' PRIMARY KEY,
+    goal_description            VARCHAR(255)                                                       NULL COMMENT '目标描述',
+    generation_name             VARCHAR(100)                                                       NULL COMMENT '生成名称',
+    ai_token_usage              INT UNSIGNED DEFAULT 0                                             NULL COMMENT 'AI使用量',
+    user_id                     BIGINT                                                             NOT NULL COMMENT '用户ID',
+    raw_data                    TEXT                                                               NULL COMMENT '原始数据',
+    code_comments               TEXT                                                               NULL COMMENT '代码注释',
+    code_profile_description    TEXT                                                               NULL COMMENT '代码简介',
+    code_entities               TEXT                                                               NULL COMMENT '代码实体',
+    code_apis                   TEXT                                                               NULL COMMENT '代码API',
+    code_execution              TEXT                                                               NULL COMMENT '代码执行',
+    code_suggestions            TEXT                                                               NULL COMMENT '代码建议',
+    code_norm_radar             TEXT                                                               NULL COMMENT '代码规范-雷达图',
+    code_norm_radar_description TEXT                                                               NULL COMMENT '代码规范-雷达图说明',
+    code_technology_pie         TEXT                                                               NULL COMMENT '代码技术-饼状图',
+    code_catalog_path           TEXT                                                               NULL COMMENT '代码目录-树状图',
+    create_time                 DATETIME     DEFAULT CURRENT_TIMESTAMP                             NOT NULL COMMENT '创建时间',
+    update_time                 DATETIME     DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL COMMENT '更新时间',
+    is_delete                   TINYINT(1)   DEFAULT FALSE                                         NOT NULL COMMENT '是否逻辑删除',
+    CONSTRAINT fk_data_charts_1_user_id FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+    INDEX idx_data_charts_1_id_is_delete (id, is_delete),
+    INDEX idx_data_charts_1_user_id (user_id)
+) COMMENT '数据信息表' COLLATE = utf8mb4_unicode_ci;
 -- 帖子表 posts
 CREATE TABLE IF NOT EXISTS posts
 (

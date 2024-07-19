@@ -8,14 +8,14 @@ import com.boxai.common.constants.CommonConstant;
 import com.boxai.common.constants.RedisKeyConstant;
 import com.boxai.model.vo.user.UserInfoVO;
 import com.boxai.utils.threadlocal.UserHolder;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 

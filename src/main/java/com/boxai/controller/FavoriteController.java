@@ -9,8 +9,10 @@ import com.boxai.model.page.PageModel;
 import com.boxai.model.vo.postfavorite.PostFavorListQueryVO;
 import com.boxai.service.PostFavoritesService;
 import com.boxai.utils.threadlocal.UserHolder;
-import jakarta.annotation.Resource;
+
 import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
 
 @RestController
 @RequestMapping("/favorite")

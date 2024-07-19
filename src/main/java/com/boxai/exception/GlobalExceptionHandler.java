@@ -6,15 +6,14 @@ import com.boxai.exception.customize.CustomizeFileException;
 import com.boxai.exception.customize.CustomizeLockException;
 import com.boxai.exception.customize.CustomizeReturnException;
 import com.boxai.exception.customize.CustomizeTransactionException;
-import jakarta.servlet.http.HttpServletRequest;
+
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.dao.DuplicateKeyException;
-import org.springframework.validation.BindException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Objects;
 
 /**

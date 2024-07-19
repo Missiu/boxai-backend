@@ -3,15 +3,17 @@ package com.boxai.config.scheduled;
 import com.boxai.config.scheduled.repository.DataChartsRepository;
 import com.boxai.config.scheduled.repository.UsersRepository;
 import com.boxai.model.entity.DataCharts;
+
+
 import com.boxai.model.entity.Users;
-import com.boxai.service.UsersService;
-import jakarta.annotation.PostConstruct;
-import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.Scheduled;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import java.time.LocalDateTime;
+
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
@@ -40,9 +42,14 @@ public class HardDeleteTask {
         LocalDateTime now = LocalDateTime.now();
         // 计算30天前的日期时间
         LocalDateTime thirtyDaysAgo = now.minusDays(30);
+
+        // 转换为 Date
+        Date dateThirtyDaysAgo = Date.from(thirtyDaysAgo.atZone(ZoneId.systemDefault()).toInstant());
+
         // 查询并删除30天前标记为删除的数据
-        List<DataCharts> byIsDeleteTrueAndDeletedAtBefore = dataChartsRepository.deleteDataChartsByIsDeleteTrueAndUpdateTimeBefore(thirtyDaysAgo);
-        List<Users> byIsDeleteTrueAndUpdateTimeBefore = usersRepository.deleteUsersByIsDeleteTrueAndUpdateTimeBefore(thirtyDaysAgo);
+        List<DataCharts> byIsDeleteTrueAndDeletedAtBefore = dataChartsRepository.deleteDataChartsByIsDeleteTrueAndUpdateTimeBefore(dateThirtyDaysAgo);
+        List<Users> byIsDeleteTrueAndUpdateTimeBefore = usersRepository.deleteUsersByIsDeleteTrueAndUpdateTimeBefore(dateThirtyDaysAgo);
+
         dataChartsRepository.deleteAll(byIsDeleteTrueAndDeletedAtBefore);
         usersRepository.deleteAll(byIsDeleteTrueAndUpdateTimeBefore);
     }

@@ -1,7 +1,6 @@
 package com.boxai.model.dto.user;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+
 import lombok.Data;
 
 import java.io.Serial;

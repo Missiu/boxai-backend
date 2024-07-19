@@ -2,9 +2,6 @@ package com.boxai.config.redisson;
 
 import com.boxai.config.redisson.properties.RedissonProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.annotation.PostConstruct;
-import jakarta.annotation.PreDestroy;
-import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
@@ -13,6 +10,9 @@ import org.redisson.config.Config;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 
 @Configuration
 @EnableConfigurationProperties(RedissonProperties.class)

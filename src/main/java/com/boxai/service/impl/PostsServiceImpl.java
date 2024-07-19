@@ -20,13 +20,13 @@ import com.boxai.service.DataChartsService;
 import com.boxai.service.PostsService;
 import com.boxai.service.UsersService;
 import com.boxai.utils.threadlocal.UserHolder;
-import jakarta.annotation.Resource;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;

@@ -4,13 +4,14 @@ import com.boxai.common.base.ReturnCode;
 import com.boxai.config.redisson.RedissonConfig;
 import com.boxai.config.redisson.properties.RedissonProperties;
 import com.boxai.exception.customize.CustomizeTransactionException;
-import jakarta.annotation.PreDestroy;
-import jakarta.annotation.Resource;
+
 import org.redisson.api.RRateLimiter;
 import org.redisson.api.RateIntervalUnit;
 import org.redisson.api.RateType;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PreDestroy;
+import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
 

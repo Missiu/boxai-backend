@@ -4,12 +4,14 @@ import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
-import jakarta.annotation.PostConstruct;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springdoc.core.customizers.GlobalOpenApiCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
+
+import javax.annotation.PostConstruct;
 
 @Configuration
 @Slf4j

@@ -1,8 +1,6 @@
 package com.boxai.config.Interceptor;
 
 import com.boxai.config.Interceptor.token.TokenInterceptorHandler;
-import jakarta.annotation.PostConstruct;
-import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.context.annotation.Configuration;
@@ -11,6 +9,9 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 
 @Configuration
 @Slf4j

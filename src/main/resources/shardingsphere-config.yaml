@@ -1,0 +1,45 @@
+mode:
+  type: Standalone
+
+dataSources:
+  ds_0:
+    dataSourceClassName: com.zaxxer.hikari.HikariDataSource
+    driverClassName: com.mysql.cj.jdbc.Driver
+    jdbcUrl: jdbc:mysql://127.0.0.1:3306/boxai
+    username: root
+    password: huzhihao
+
+rules:
+  - !SHARDING
+    tables:
+      data_charts:
+        actualDataNodes: ds_0.data_charts_$->{0..1}
+        tableStrategy:
+          standard:
+            shardingColumn: user_id
+            shardingAlgorithmName: data_charts_inline
+      users:
+        actualDataNodes: ds_0.users
+      posts:
+        actualDataNodes: ds_0.posts
+      post_likes:
+        actualDataNodes: ds_0.post_likes
+      post_comments:
+        actualDataNodes: ds_0.post_comments
+      post_favorites:
+        actualDataNodes: ds_0.post_favorites
+
+    shardingAlgorithms:
+      data_charts_inline:
+        type: INLINE
+        props:
+          algorithm-expression: data_charts_$->{user_id % 2}
+
+
+props:
+  sql-show: true
+  sql-simple: true
+  executor-size: 20
+  max-connections-size-per-query: 1
+  check-table-metadata-enabled: false
+  check-duplicate-table-enabled: false

@@ -18,12 +18,12 @@ import com.boxai.utils.chat.Message;
 import com.boxai.utils.chat.MoonshotAiPrompt;
 import com.boxai.utils.chat.MoonshotAiUtils;
 import com.boxai.utils.rateLimit.RateLimitUtils;
-import jakarta.annotation.Resource;
-import jakarta.transaction.Transactional;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
+import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
