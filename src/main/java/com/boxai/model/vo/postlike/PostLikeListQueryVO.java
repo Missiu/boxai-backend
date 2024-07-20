@@ -1,5 +1,9 @@
 package com.boxai.model.vo.postlike;
 
+import com.alibaba.fastjson2.annotation.JSONField;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
 
 import java.io.Serial;
@@ -39,6 +43,9 @@ public class PostLikeListQueryVO implements Serializable {
     /**
      * 帖子 id
      */
+    @JsonProperty("postId")
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
+    @JSONField(serializeUsing = ToStringSerializer.class)
     private Long postId;
 
     /**

@@ -191,7 +191,8 @@ public class SaveDataService {
                 throw new CustomizeTransactionException(ReturnCode.ERRORS_OCCURRED_IN_THE_DATABASE_SERVICE);
             }
         } else {
-            if (dataChartsMapper.updateById(dataCharts) != 1) {
+            Boolean b = dataChartsMapper.dataUpdateById(dataCharts);
+            if (!b) {
                 throw new CustomizeTransactionException(ReturnCode.ERRORS_OCCURRED_IN_THE_DATABASE_SERVICE);
             }
         }

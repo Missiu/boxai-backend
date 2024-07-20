@@ -14,5 +14,16 @@ import static com.boxai.utils.dataclean.DataClean.extractFlagsContent;
 
 @SpringBootTest
 class BoxaiApplicationTests {
+    @Autowired
+    private DataChartsMapper dataChartsMapper;
 
+    @Test
+    void contextLoads() {
+        DataCharts dataCharts = new DataCharts();
+        dataCharts.setId(7L);
+        dataCharts.setUserId(2L);
+        dataCharts.setCodeApis("{\"code\":\"\",\"message\":\"\",\"type\":\"\",\"flag\":\"\",\"content\":\"\",\"flagContent\":\"\",\"flagContentList\":[]}");
+        Boolean b = dataChartsMapper.dataUpdateById(dataCharts);
+        System.out.println(b);
+    }
 }

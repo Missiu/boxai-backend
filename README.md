@@ -25,6 +25,10 @@ GitHub作为全球最大的开源社区，拥有众多优秀的开源项目，20
 - fastjson2
 - Knife4j
 
+## 数据库设计
+![](attachments/Diagram%201.jpg)
+使用了水平分表
+
 ## 项目展示
 
 ![](attachments/Github源码分析.png)

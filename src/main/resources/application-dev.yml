@@ -39,18 +39,19 @@ knife4j:
   enable: true
   setting:
     language: zh-CN
-### SpringDoc-OpenAPI项目配置
-#springdoc:
-#  api-docs:
-#    path: /v2/api-docs
-#    version: openapi_3_1
-#  swagger-ui:
-#    path: /swagger-ui.html
-#  group-configs:
-#    - group: "box-ai"
-#      paths-to-match: "/**"
-#      packages-to-scan:
-#        - com.boxai.controller
+
+## SpringDoc-OpenAPI项目配置
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+    version: openapi_3_1
+  swagger-ui:
+    path: /swagger-ui.html
+  group-configs:
+    - group: "box-ai"
+      paths-to-match: "/**"
+      packages-to-scan:
+        - com.boxai.controller
 
 # 公共配置文件
 spring:

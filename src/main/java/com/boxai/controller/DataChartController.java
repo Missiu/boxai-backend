@@ -1,5 +1,6 @@
 package com.boxai.controller;
 
+import com.alibaba.fastjson2.annotation.JSONField;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.boxai.common.base.R;
 import com.boxai.common.base.ReturnCode;
@@ -9,6 +10,9 @@ import com.boxai.model.page.PageModel;
 import com.boxai.model.vo.datachart.ChartQueryVO;
 import com.boxai.model.vo.datachart.UniversalDataChartsVO;
 import com.boxai.service.DataChartsService;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -38,7 +42,7 @@ public class DataChartController {
             schemaProperties = {
                     @SchemaProperty(
                             name = "file",
-                            schema = @Schema(type = "string",format = "binary")
+                            schema = @Schema(type = "string", format = "binary")
                     ),
                     @SchemaProperty(
                             name = "goalDescription",
@@ -51,8 +55,8 @@ public class DataChartController {
             }
     )})
     public R<UniversalDataChartsVO> genFileChart(MultipartFile file,
-                                                     String goalDescription, String generationName) {
-        ChartCreateDTO chartCreateDTO = new ChartCreateDTO(goalDescription,generationName);
+                                                 String goalDescription, String generationName) {
+        ChartCreateDTO chartCreateDTO = new ChartCreateDTO(goalDescription, generationName);
         return R.ok(dataChartsService.generationFileChart(file, chartCreateDTO));
     }
 
@@ -68,7 +72,7 @@ public class DataChartController {
             schemaProperties = {
                     @SchemaProperty(
                             name = "files",
-                            schema = @Schema(type = "string",format = "binary")
+                            schema = @Schema(type = "string", format = "binary")
                     ),
                     @SchemaProperty(
                             name = "goalDescription",
@@ -82,12 +86,13 @@ public class DataChartController {
     )})
     public R<UniversalDataChartsVO> genMultipleChart(MultipartFile[] files,
                                                      String goalDescription, String generationName) {
-        ChartCreateDTO chartCreateDTO = new ChartCreateDTO(goalDescription,generationName);
+        ChartCreateDTO chartCreateDTO = new ChartCreateDTO(goalDescription, generationName);
         return R.ok(dataChartsService.generationMultipleChart(files, chartCreateDTO));
     }
 
     /**
      * 通过文件生成单个图表 异步
+     *
      * @return 返回生成的图表信息
      */
     @PostMapping(value = "/gen/file/async")
@@ -97,7 +102,7 @@ public class DataChartController {
             schemaProperties = {
                     @SchemaProperty(
                             name = "file",
-                            schema = @Schema(type = "string",format = "binary")
+                            schema = @Schema(type = "string", format = "binary")
                     ),
                     @SchemaProperty(
                             name = "goalDescription",
@@ -110,8 +115,8 @@ public class DataChartController {
             }
     )})
     public R<UniversalDataChartsVO> genFileChartAsync(MultipartFile file,
-                                                 String goalDescription, String generationName) {
-        ChartCreateDTO chartCreateDTO = new ChartCreateDTO(goalDescription,generationName);
+                                                      String goalDescription, String generationName) {
+        ChartCreateDTO chartCreateDTO = new ChartCreateDTO(goalDescription, generationName);
         return R.ok(dataChartsService.generationFileChartAsync(file, chartCreateDTO));
     }
 
@@ -127,7 +132,7 @@ public class DataChartController {
             schemaProperties = {
                     @SchemaProperty(
                             name = "files",
-                            schema = @Schema(type = "string",format = "binary")
+                            schema = @Schema(type = "string", format = "binary")
                     ),
                     @SchemaProperty(
                             name = "goalDescription",
@@ -140,8 +145,8 @@ public class DataChartController {
             }
     )})
     public R<UniversalDataChartsVO> genMultipleChartAsync(MultipartFile[] files,
-                                                     String goalDescription, String generationName) {
-        ChartCreateDTO chartCreateDTO = new ChartCreateDTO(goalDescription,generationName);
+                                                          String goalDescription, String generationName) {
+        ChartCreateDTO chartCreateDTO = new ChartCreateDTO(goalDescription, generationName);
         return R.ok(dataChartsService.generationMultipleChartAsync(files, chartCreateDTO));
     }
 
@@ -149,10 +154,12 @@ public class DataChartController {
     public R<UniversalDataChartsVO> genTextChart(@RequestBody ChartCreatTextDTO chartCreatTextDTO) {
         return R.ok(dataChartsService.genTextChart(chartCreatTextDTO));
     }
+
     @PostMapping("/gen/text/sync")
-    public R<UniversalDataChartsVO> genTextChartSync( @RequestBody ChartCreatTextDTO chartCreatTextDTO) {
+    public R<UniversalDataChartsVO> genTextChartSync(@RequestBody ChartCreatTextDTO chartCreatTextDTO) {
         return R.ok(dataChartsService.genTextChartSync(chartCreatTextDTO));
     }
+
     /**
      * 删除图表
      *
@@ -187,15 +194,17 @@ public class DataChartController {
      */
     @PostMapping("/list/info")
     public R<Page<UniversalDataChartsVO>> listChartInfo(@RequestBody ChartQueryDTO chartQueryDTO,
-                                               PageModel pageModel) {
+                                                        PageModel pageModel) {
         return R.ok(dataChartsService.listChartInfo(chartQueryDTO, pageModel));
     }
 
     @GetMapping("/info")
-    public R<UniversalDataChartsVO> getChartInfo(Long id) {
+
+    public R<UniversalDataChartsVO> getChartInfo(String id) {
         if (id == null) {
             throw new CustomizeReturnException(ReturnCode.REQUEST_REQUIRED_PARAMETER_IS_EMPTY);
         }
-        return R.ok(dataChartsService.getChartInfo(id));
+
+        return R.ok(dataChartsService.getChartInfo(Long.valueOf(id)));
     }
 }

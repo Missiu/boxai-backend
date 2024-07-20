@@ -21,6 +21,17 @@
     <properties>
         <!-- Java相关 -->
         <java.version>17</java.version>
+        <mybatis-plus.version>3.5.7</mybatis-plus.version>
+        <fastjson2.version>2.0.47</fastjson2.version>
+        <fastjson2-extension.version>2.0.47</fastjson2-extension.version>
+        <mysql.version>8.0.33</mysql.version>
+        <druid.version>1.2.22</druid.version>
+        <knife4j-openapi3.version>4.5.0</knife4j-openapi3.version>
+        <redisson.version>3.29.0</redisson.version>
+        <bcprov-jdk18on.version>1.77</bcprov-jdk18on.version>
+        <shardingsphere-jdbc-core.vsersion>5.4.1</shardingsphere-jdbc-core.vsersion>
+        <!-- 工具相关-->
+        <hutool.version>5.8.27</hutool.version>
     </properties>
 
     <!-- 依赖详情 -->
@@ -47,7 +58,7 @@
         <dependency>
             <groupId>org.yaml</groupId>
             <artifactId>snakeyaml</artifactId>
-            <!--            <version>1.33</version>-->
+            <version>1.33</version>
         </dependency>
 
         <!-- 使用 Undertow-->
@@ -101,6 +112,10 @@
             <artifactId>spring-boot-starter-cache</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+        </dependency>
         <!-- ===SpringBoot 依赖配置=== -->
 
         <!-- ==MySQL依赖配置==-->
@@ -108,18 +123,27 @@
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
+            <version>${mybatis-plus.version}</version>
         </dependency>
 
         <!-- 引入MySQL连接器依赖 -->
         <dependency>
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
+            <version>${mysql.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid-spring-boot-starter</artifactId>
+            <version>${druid.version}</version>
         </dependency>
 
         <!-- sharding-jdbc 用于分库分表-->
         <dependency>
             <groupId>org.apache.shardingsphere</groupId>
             <artifactId>shardingsphere-jdbc-core</artifactId>
+            <version>${shardingsphere-jdbc-core.vsersion}</version>
         </dependency>
         <!-- ==MySQL依赖配置==-->
 
@@ -134,12 +158,14 @@
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
+            <version>${hutool.version}</version>
         </dependency>
 
         <!-- 加密密码 -->
         <dependency>
             <groupId>org.bouncycastle</groupId>
             <artifactId>bcprov-jdk18on</artifactId>
+            <version>${bcprov-jdk18on.version}</version>
         </dependency>
 
         <!-- 用于网络请求-->
@@ -164,18 +190,21 @@
         <dependency>
             <groupId>com.alibaba.fastjson2</groupId>
             <artifactId>fastjson2</artifactId>
+            <version>${fastjson2.version}</version>
         </dependency>
 
         <!-- 引入fastjson2对Spring Framework 5的支持扩展 -->
         <dependency>
             <groupId>com.alibaba.fastjson2</groupId>
             <artifactId>fastjson2-extension-spring5</artifactId>
+            <version>${fastjson2-extension.version}</version>
         </dependency>
 
         <!-- Knife4j 依赖配置 -->
         <dependency>
             <groupId>com.github.xiaoymin</groupId>
-            <artifactId>knife4j-openapi2-spring-boot-starter</artifactId>
+            <artifactId>knife4j-openapi3-spring-boot-starter</artifactId>
+            <version>${knife4j-openapi3.version}</version>
         </dependency>
         <!-- 开发工具依赖配置-->
 
@@ -190,7 +219,9 @@
         <dependency>
             <groupId>org.redisson</groupId>
             <artifactId>redisson</artifactId>
+            <version>${redisson.version}</version>
         </dependency>
+
 
         <!-- 缓存相关-->
     </dependencies>

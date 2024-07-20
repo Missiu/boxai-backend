@@ -58,7 +58,7 @@ CREATE TABLE IF NOT EXISTS data_charts
     generation_name             VARCHAR(100)                                                       NULL COMMENT '生成名称',
     ai_token_usage              INT UNSIGNED DEFAULT 0                                             NULL COMMENT 'AI使用量',
     user_id                     BIGINT                                                             NOT NULL COMMENT '用户ID',
-    raw_data                    TEXT                                                               NULL COMMENT '原始数据',
+    raw_data                    MEDIUMTEXT                                                               NULL COMMENT '原始数据',
     code_comments               TEXT                                                               NULL COMMENT '代码注释',
     code_profile_description    TEXT                                                               NULL COMMENT '代码简介',
     code_entities               TEXT                                                               NULL COMMENT '代码实体',
@@ -85,7 +85,7 @@ CREATE TABLE IF NOT EXISTS data_charts_0
     generation_name             VARCHAR(100)                                                       NULL COMMENT '生成名称',
     ai_token_usage              INT UNSIGNED DEFAULT 0                                             NULL COMMENT 'AI使用量',
     user_id                     BIGINT                                                             NOT NULL COMMENT '用户ID',
-    raw_data                    TEXT                                                               NULL COMMENT '原始数据',
+    raw_data                    MEDIUMTEXT                                                               NULL COMMENT '原始数据',
     code_comments               TEXT                                                               NULL COMMENT '代码注释',
     code_profile_description    TEXT                                                               NULL COMMENT '代码简介',
     code_entities               TEXT                                                               NULL COMMENT '代码实体',
@@ -111,7 +111,7 @@ CREATE TABLE IF NOT EXISTS data_charts_1
     generation_name             VARCHAR(100)                                                       NULL COMMENT '生成名称',
     ai_token_usage              INT UNSIGNED DEFAULT 0                                             NULL COMMENT 'AI使用量',
     user_id                     BIGINT                                                             NOT NULL COMMENT '用户ID',
-    raw_data                    TEXT                                                               NULL COMMENT '原始数据',
+    raw_data                    MEDIUMTEXT                                                               NULL COMMENT '原始数据',
     code_comments               TEXT                                                               NULL COMMENT '代码注释',
     code_profile_description    TEXT                                                               NULL COMMENT '代码简介',
     code_entities               TEXT                                                               NULL COMMENT '代码实体',
@@ -141,14 +141,13 @@ CREATE TABLE IF NOT EXISTS posts
     create_time     DATETIME   DEFAULT CURRENT_TIMESTAMP                             NOT NULL COMMENT '创建时间',
     update_time     DATETIME   DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL COMMENT '更新时间',
     is_delete       TINYINT(1) DEFAULT FALSE                                         NOT NULL COMMENT '是否删除',
-    CONSTRAINT fk_posts_user_id FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
-    CONSTRAINT fk_posts_post_id FOREIGN KEY (post_id) REFERENCES data_charts (id) ON DELETE CASCADE,
     CONSTRAINT check_positive_likes_count CHECK (likes_count >= 0),
     CONSTRAINT check_positive_favorites_count CHECK (favorites_count >= 0),
     INDEX idx_posts_id_is_delete (id, is_delete),
     INDEX idx_posts_user_id (user_id),
     INDEX idx_posts_post_id (post_id)
 ) COMMENT '帖子信息表' COLLATE = utf8mb4_unicode_ci;
+
 
 -- 帖子点赞表 post_likes
 CREATE TABLE IF NOT EXISTS post_likes

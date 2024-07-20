@@ -63,4 +63,12 @@
         FROM posts
         WHERE post_id = #{postId}
     </select>
+<!--    insert-->
+<!--    <insert id="insertPost" parameterType="com.boxai.model.entity.Posts">-->
+<!--        INSERT INTO posts-->
+<!--        (likes_count,favorites_count,content,user_id,post_id,create_time,update_time,is_delete)-->
+<!--        VALUES-->
+<!--        (#{likesCount},#{favoritesCount},#{content},#{userId},#{postId},now(),now(),0)-->
+<!--    </insert>-->
 </mapper>
+

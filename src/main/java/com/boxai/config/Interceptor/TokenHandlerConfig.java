@@ -1,8 +1,8 @@
 package com.boxai.config.Interceptor;
 
 import com.boxai.config.Interceptor.token.TokenInterceptorHandler;
+import groovyjarjarantlr4.v4.runtime.misc.NotNull;
 import lombok.extern.slf4j.Slf4j;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;

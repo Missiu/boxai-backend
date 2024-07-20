@@ -119,5 +119,62 @@
         set update_time = now()
         where id = #{id,jdbcType=VARCHAR} and is_delete = 0
     </update>
-
+<!--    updateById-->
+    <update id="dataUpdateById" parameterType="com.boxai.model.entity.DataCharts">
+        update data_charts
+        <set>
+            <if test="goalDescription != null">
+                goal_description = #{goalDescription,jdbcType=VARCHAR},
+            </if>
+            <if test="generationName != null">
+                generation_name = #{generationName,jdbcType=VARCHAR},
+            </if>
+            <if test="aiTokenUsage != null">
+                ai_token_usage = #{aiTokenUsage,jdbcType=VARCHAR},
+            </if>
+            <if test="codeComments != null">
+                code_comments = #{codeComments,jdbcType=VARCHAR},
+            </if>
+            <if test="rawData != null">
+                raw_data = #{rawData,jdbcType=VARCHAR},
+            </if>
+            <if test="codeProfileDescription != null">
+                code_profile_description = #{codeProfileDescription,jdbcType=VARCHAR},
+            </if>
+            <if test="codeEntities != null">
+                code_entities = #{codeEntities,jdbcType=VARCHAR},
+            </if>
+            <if test="codeApis != null">
+                code_apis = #{codeApis,jdbcType=VARCHAR},
+            </if>
+            <if test="codeExecution != null">
+                code_execution = #{codeExecution,jdbcType=VARCHAR},
+            </if>
+            <if test="codeSuggestions != null">
+                code_suggestions = #{codeSuggestions,jdbcType=VARCHAR},
+            </if>
+            <if test="codeNormRadar != null">
+                code_norm_radar = #{codeNormRadar,jdbcType=VARCHAR},
+            </if>
+            <if test="codeNormRadarDescription != null">
+                code_norm_radar_description = #{codeNormRadarDescription,jdbcType=VARCHAR},
+            </if>
+            <if test="codeTechnologyPie != null">
+                code_technology_pie = #{codeTechnologyPie,jdbcType=VARCHAR},
+            </if>
+            <if test="codeCatalogPath != null">
+                code_catalog_path = #{codeCatalogPath,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=VARCHAR},
+            </if>
+            <if test="isDelete != null">
+                is_delete = #{isDelete,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR} and is_delete = 0 and user_id = #{userId,jdbcType=VARCHAR}
+    </update>
+    <select id="selectByIdAndUserId" resultType="com.boxai.model.entity.DataCharts">
+        select * from data_charts where id = #{id,jdbcType=VARCHAR} and is_delete = 0 and user_id = #{userId,jdbcType=VARCHAR}
+    </select>
 </mapper>

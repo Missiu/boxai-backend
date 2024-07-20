@@ -49,6 +49,9 @@ public interface DataChartsMapper extends BaseMapper<DataCharts> {
      */
     Boolean updateCurrentTime (Long id);
 
+    Boolean dataUpdateById(DataCharts dataCharts);
+
+    DataCharts selectByIdAndUserId(Long id, Long userId);
 }
 
 

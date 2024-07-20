@@ -305,15 +305,6 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users>
     @Override
     public Boolean UserUpdateAIKey(UserUpdateKeyDTO userUpdatekeyDTO) {
         UserInfoVO user = UserHolder.getUser();
-        if (user.getRole().equals("user") && Objects.isNull(userUpdatekeyDTO)){
-            baseMapper.updateUserRole("user",UserHolder.getUser().getId());
-        }
-        if (user.getRole().equals("vip") && Objects.nonNull(userUpdatekeyDTO)){
-            baseMapper.updateUserRole("vip",UserHolder.getUser().getId());
-        }
-        if (Objects.equals(userUpdatekeyDTO.getRole(), "user") ||               Objects.equals(userUpdatekeyDTO.getRole(), "vip")){
-            return true;
-        }
         Boolean aBoolean = baseMapper.updateUserRole(userUpdatekeyDTO.getRole(), user.getId());
         if (Boolean.FALSE.equals(aBoolean)){
             throw new CustomizeTransactionException(ReturnCode.ERRORS_OCCURRED_IN_THE_DATABASE_SERVICE);

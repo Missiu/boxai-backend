@@ -24,8 +24,8 @@ import static com.boxai.common.constants.MoonshotAiConstant.*;
 @Slf4j
 public class MoonshotAiUtils {
     // Moonlight API的URL地址
-//    private static final String API_KEY = "sk-o5jNed8HHSua4ch2pE4vFabKnB8AswQVwRXS9Ne30Ti1zR9T";
-    private static final String API_KEY = "sk-jwnoCcWzRrHW0UM0fx48uVXOqFhnhPIZsSr1y3DEetD9JHG6";
+//    private static final String API_KEY = "";
+    private static final String API_KEY = "sk-acjt3wpC3zzle2ZiXD9evB7Of9OAwqjNtWXtBP2GUOBuqbzh";
     private static final String MODELS_URL = "https://api.moonshot.cn/v1";
     private static final String FILES_URL = "https://api.moonshot.cn/v1/files";
     private static final String ESTIMATE_TOKEN_COUNT_URL = "https://api.moonshot.cn/v1/tokenizers/estimate-token-count";
@@ -185,11 +185,12 @@ public class MoonshotAiUtils {
 
     public static Map<String, Double> fetchBalance(String apiKey) {
         Map<String, Double> balances = new HashMap<>();
-        HttpResponse response = HttpUtil.createGet(GET_BALANCE_URL)
-                .header("Authorization", "Bearer " + apiKey)
-                .execute();
-        if (response.isOk()) {
-            JSONObject json = JSONUtil.parseObj(response);
+        String body = HttpRequest.of(GET_BALANCE_URL).
+                header(Header.AUTHORIZATION, "Bearer " + apiKey)
+                .execute()
+                .body();
+        if (body != null) {
+            JSONObject json = JSONUtil.parseObj(body);
             JSONObject data = json.getJSONObject("data");
             // 获取三个余额值
             double availableBalance = data.getDouble("available_balance");
@@ -201,7 +202,7 @@ public class MoonshotAiUtils {
             balances.put("voucher_balance", voucherBalance);
             balances.put("cash_balance", cashBalance);
         } else {
-            log.error("Request to {} failed with status code {}", GET_BALANCE_URL, response.getStatus());
+            log.error("Request to {} failed", GET_BALANCE_URL);
         }
         return balances;
     }
