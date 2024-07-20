@@ -25,7 +25,7 @@ import static com.boxai.common.constants.MoonshotAiConstant.*;
 public class MoonshotAiUtils {
     // Moonlight API的URL地址
 //    private static final String API_KEY = "";
-    private static final String API_KEY = "sk-acjt3wpC3zzle2ZiXD9evB7Of9OAwqjNtWXtBP2GUOBuqbzh";
+    private static final String API_KEY = "";
     private static final String MODELS_URL = "https://api.moonshot.cn/v1";
     private static final String FILES_URL = "https://api.moonshot.cn/v1/files";
     private static final String ESTIMATE_TOKEN_COUNT_URL = "https://api.moonshot.cn/v1/tokenizers/estimate-token-count";
